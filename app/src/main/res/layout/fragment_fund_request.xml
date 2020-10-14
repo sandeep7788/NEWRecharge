@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:fillViewport="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg"/>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginRight="25dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="From Bank"
+                            android:textColor="@color/colorPrimary" />
+
+                        <Spinner
+                            android:id="@+id/sp_fromBank"
+                            style="@android:style/Widget.Holo.Light.Spinner"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:text="To Bank"
+                            android:textColor="@color/colorPrimary" />
+
+                        <Spinner
+                            android:id="@+id/sp_toBank"
+                            style="@android:style/Widget.Holo.Light.Spinner"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:text="Payment Mode"
+                            android:textColor="@color/colorPrimary" />
+
+                        <Spinner
+                            android:id="@+id/sp_paymentMode"
+                            style="@android:style/Widget.Holo.Light.Spinner"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content" />
+
+                        <RadioGroup
+                            android:id="@+id/rgOperatorCodes"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone"
+                            android:weightSum="1.0">
+
+                            <RadioButton
+                                android:id="@+id/rbOperatorOne"
+                                android:layout_width="0.0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:text="BT" />
+
+                            <RadioButton
+                                android:id="@+id/rbOperatorTwo"
+                                android:layout_width="0.0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:text="BT" />
+                        </RadioGroup>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/edt_amount"
+                                android:layout_width="fill_parent"
+                                android:layout_height="45dp"
+                                android:layout_marginTop="7dp"
+                                android:background="@drawable/background_shadow"
+                                android:backgroundTint="#EBEDEF"
+                                android:drawableLeft="@drawable/rs"
+                                android:drawablePadding="10.0dip"
+                                android:drawableTint="@color/colorPrimary"
+                                android:hint="Amount"
+                                android:inputType="number"
+                                android:textColor="#ff000000"
+                                android:textColorHint="#566573"
+                                android:textSize="15.0sp" />
+
+                            <EditText
+                                android:id="@+id/edt_ChequeOrDDNumber"
+                                android:layout_width="fill_parent"
+                                android:layout_height="45dp"
+                                android:layout_marginTop="7dp"
+                                android:background="@drawable/background_shadow"
+                                android:backgroundTint="#EBEDEF"
+                                android:drawableLeft="@drawable/rs"
+                                android:drawablePadding="10.0dip"
+                                android:paddingLeft="9dp"
+                                android:drawableTint="@color/colorPrimary"
+                                android:hint="Transcation Or DD Number"
+                                android:inputType="number"
+                                android:textColor="#ff000000"
+                                android:textColorHint="#566573"
+                                android:textSize="15.0sp" />
+
+                            <EditText
+                                android:id="@+id/edt_Remark"
+                                android:layout_width="fill_parent"
+                                android:layout_height="45dp"
+                                android:layout_marginTop="7dp"
+                                android:background="@drawable/background_shadow"
+                                android:backgroundTint="#EBEDEF"
+                                android:drawableLeft="@drawable/rs"
+                                android:drawablePadding="10.0dip"
+                                android:drawableTint="@color/colorPrimary"
+                                android:hint="Remark"
+                                android:inputType="number"
+                                android:textColor="#ff000000"
+                                android:textColorHint="#566573"
+                                android:textSize="15.0sp"
+                                android:paddingLeft="9dp" />
+
+
+                            <TextView
+                                android:id="@+id/txt_showPlan_dth"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:background="@color/c_blue"
+                                android:padding="7dp"
+                                android:text="VIEW PLAN"
+                                android:textColor="#ff3bbdfa"
+                                android:textSize="15.0sp"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
+
+                        <Button
+                            android:id="@+id/btn_sendFundRequest"
+                            android:layout_width="wrap_content"
+                            android:layout_height="39dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="19dp"
+                            android:layout_marginRight="5.0dip"
+                            android:layout_toLeftOf="@+id/btn_back"
+                            android:background="@drawable/background_shadow"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:drawableRight="@drawable/ic_baseline_arrow_forward_24"
+                            android:drawableTint="@color/white_color"
+                            android:foregroundGravity="center"
+                            android:gravity="left|center"
+                            android:paddingLeft="25dp"
+                            android:paddingRight="25dp"
+                            android:text="Send"
+                            android:textColor="@color/white_color"
+                            android:fontFamily="@font/worksans_medium" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

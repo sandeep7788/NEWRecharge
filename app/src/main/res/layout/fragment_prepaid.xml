@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/appbar_layout_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:background="@color/white_color">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_marginBottom="15dp"
+                    android:elevation="10dp"
+                    app:contentPaddingBottom="25dp"
+                    android:paddingBottom="25dp"
+                    app:cardCornerRadius="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/background_shadow"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0">
+
+                            <EditText
+                                android:id="@id/edtMobile"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="50dp"
+                                android:layout_marginRight="32dp"
+                                android:backgroundTint="#EBEDEF"
+                                android:drawableTint="@color/colorPrimary"
+                                android:ellipsize="end"
+                                android:hint="Enter No."
+                                android:inputType="number"
+                                android:maxLength="15"
+                                android:drawablePadding="9dp"
+                                android:textColor="#ff000000"
+                                android:paddingLeft="15dp"
+                                android:textColorHint="#566573"
+                                android:textSize="15.0sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                            <ImageView
+                                android:id="@+id/ivPhoneBook"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="0.1"
+                                android:layout_marginTop="2dp"
+                                android:foregroundGravity="center"
+                                android:src="@drawable/ic_baseline_contact_phone_24"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="1.0"
+                                app:layout_constraintStart_toStartOf="@+id/edtMobile"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/colorPrimaryDark" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/background_shadow"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0">
+
+                            <TextView
+                                android:id="@id/operator"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="50dp"
+                                android:layout_marginRight="32dp"
+                                android:backgroundTint="#EBEDEF"
+                                android:textColor="#ff000000"
+                                android:paddingLeft="15dp"
+                                android:textColorHint="#566573"
+                                android:textSize="15.0sp"
+                                android:hint="Select Operator"
+                                android:gravity="center|left"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="4dp"
+                                android:layout_weight="0.1"
+                                android:foregroundGravity="center"
+                                android:padding="2dp"
+                                android:src="@drawable/prepaid"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/colorPrimaryDark" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/background_shadow"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0">
+
+                            <EditText
+                                android:id="@id/edtAmount"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="50dp"
+                                android:layout_marginRight="32dp"
+                                android:backgroundTint="#EBEDEF"
+                                android:textColor="#ff000000"
+                                android:paddingLeft="15dp"
+                                android:textColorHint="#566573"
+                                android:textSize="15.0sp"
+                                android:hint="Enter Amount"
+                                android:gravity="center|left"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="0.1"
+                                android:foregroundGravity="center"
+                                android:src="@drawable/whitepmrlogo"
+                                android:padding="2dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="1.0"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/colorPrimaryDark" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!--
+                <TextView
+                    android:id="@+id/tt1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="40.0dip"
+                    android:text="Operator"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginTop="4dp"/>
+            -->
+
+
+                        <!--
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0dip"
+                    android:layout_margin="3.0dip"
+                    android:background="#ffbdbdbd" />
+            -->
+
+
+
+
+                        <Button
+                            android:id="@id/btnRecharge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="39dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="19dp"
+                            android:layout_marginRight="9dp"
+                            android:layout_toLeftOf="@id/btn_back"
+                            android:background="@drawable/background_shadow"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:drawableRight="@drawable/ic_baseline_arrow_forward_24"
+                            android:drawableTint="@color/white_color"
+                            android:fontFamily="@font/worksans_medium"
+                            android:foregroundGravity="center"
+                            android:gravity="left|center"
+                            android:paddingLeft="25dp"
+                            android:paddingRight="25dp"
+                            android:text="Recharges"
+                            android:textColor="@color/white_color" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="4dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:background="@color/white_color">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/f1"/>
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

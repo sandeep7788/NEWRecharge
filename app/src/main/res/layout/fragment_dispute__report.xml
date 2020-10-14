@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:id="@+id/distributer_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#ffffffff"
+        android:clickable="true">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#ffffffff"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffe3f2fd"
+                android:orientation="horizontal"
+                android:paddingTop="5.0dip"
+                android:paddingBottom="5dp"
+                android:weightSum="1.0">
+
+                <RelativeLayout
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2.0dip"
+                    android:layout_weight="0.25">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1.0dip"
+                        android:layout_marginBottom="1.0dip"
+                        android:gravity="center"
+                        android:text="Ticket Id"
+                        android:textColor="#ff000000"
+                        android:textSize="12.0sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1.0dip"
+                        android:layout_marginRight="7.0dip"
+                        android:layout_marginBottom="1.0dip"
+                        android:gravity="center"
+                        android:text="Mobile No."
+                        android:textColor="#ff000000"
+                        android:textSize="12.0sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1.0dip"
+                        android:layout_marginBottom="1.0dip"
+                        android:gravity="center"
+                        android:text="Status"
+                        android:textColor="#ff000000"
+                        android:textSize="12.0sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1.0dip"
+                        android:layout_marginBottom="1.0dip"
+                        android:gravity="center"
+                        android:text="Repley"
+                        android:textColor="#ff000000"
+                        android:textSize="12.0sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                >
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2.0dip"
+                android:background="#ffbbdefb" />
+
+            <ExpandableListView
+                android:id="@+id/listFundReceive"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:childDivider="@color/colorPrimary"
+                android:divider="#ffffffff"
+                android:drawSelectorOnTop="false"
+                android:groupIndicator="@android:color/transparent"
+                android:scrollbars="none" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>

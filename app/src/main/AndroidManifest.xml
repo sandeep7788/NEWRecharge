@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.myrecharge">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m"
+        tools:replace="android:icon">
+
+        <activity android:name=".Activitys.Manus.Scanner_Activity">
+        </activity>
+        <activity android:name=".Activitys.ChangePassword_Activity" />
+        <activity android:name=".Activitys.AccountDetails_Activity" />
+        <activity android:name=".Activitys.Personal_detailsActivity" />
+        <activity android:name=".Activitys.Qr_Activity" />
+        <activity android:name=".Activitys.SplachScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activitys.Login_Activity" />
+        <activity android:name=".Activitys.DashboardActivity" />
+        <activity android:name=".Activitys.Manus.Pay_Activity" />
+        <activity android:name=".Activitys.Pay_Activity2" />
+        <activity android:name=".Activitys.Manus.Prepaid_Activity" />
+
+    </application>
+
+</manifest>
