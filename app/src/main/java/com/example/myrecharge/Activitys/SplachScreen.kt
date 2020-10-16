@@ -1,37 +1,37 @@
 package com.example.myrecharge.Activitys
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myrecharge.Helper.*
+import cn.pedant.SweetAlert.SweetAlertDialog
+import com.example.myrecharge.Helper.ApiInterface
+import com.example.myrecharge.Helper.Constances
+import com.example.myrecharge.Helper.Local_data
+import com.example.myrecharge.Helper.RetrofitManager
 import com.example.myrecharge.R
 import com.google.gson.JsonObject
-import com.pnikosis.materialishprogress.ProgressWheel
-import de.mateware.snacky.Snacky
 import org.json.JSONArray
 import org.json.JSONObject
 import pl.droidsonroids.gif.GifImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
-
-class SplachScreen : AppCompatActivity(), Observer {
+class SplachScreen : AppCompatActivity() {
     private val SPLASH_TIME_OUT:Long = 3000 // 1 sec
     var f39t: TextView? = null
     var t1: TextView? = null
@@ -40,8 +40,9 @@ class SplachScreen : AppCompatActivity(), Observer {
     var mdevice:String="0000"
     lateinit var gifview:GifImageView
     lateinit var i_re_try:ImageView
-    lateinit var pDialog: ProgressWheel
+    lateinit var pDialog: ProgressBar
     val TAG="@@splachscreen"
+    public var MyReceiver1: BroadcastReceiver? = null
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,22 +51,15 @@ class SplachScreen : AppCompatActivity(), Observer {
         mLocal_data.setMyappContext(this@SplachScreen)
         i_re_try=findViewById(R.id.i_re_try)
         pDialog=findViewById(R.id.progress_bar)
-        var MyReceiver: BroadcastReceiver? = null;
-        MyReceiver = com.example.myrecharge.Helper.MyReceiver()
-        registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        MyReceiver1 = Network_reciver()
+        registerReceiver(MyReceiver1, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
-//        isOnline(this)
-        Log.d(TAG, isOnline(this).toString())
-/*
-        if(isOnline(this@SplachScreen)){
-            login()
-        }
-*/
-
-}
+    }
 
     fun login()
     {
+        Log.d(TAG, "login: username"+mLocal_data.ReadStringPreferences(Constances.PREF_Mobile))
+        Log.d(TAG, "login: password"+mLocal_data.ReadStringPreferences(Constances.PREF_Login_password))
         pDialog!!.visibility=View.VISIBLE
         var apiInterface: ApiInterface = RetrofitManager.instance!!.create(ApiInterface::class.java)
 
@@ -77,6 +71,7 @@ class SplachScreen : AppCompatActivity(), Observer {
                 pDialog!!.visibility=View.GONE
             }
 
+            @SuppressLint("WrongConstant")
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 if(response.isSuccessful) {
 
@@ -87,6 +82,7 @@ class SplachScreen : AppCompatActivity(), Observer {
                         Toast.makeText(this@SplachScreen," "+jsonObject.getString("Message"),Toast.LENGTH_LONG).show()
 
                         val json_Array: JSONArray =jsonObject.getJSONArray("Data")
+
                         for (i in 0 until json_Array.length()){
 
                             val jsonobject1:JSONObject = json_Array.getJSONObject(i)
@@ -100,47 +96,86 @@ class SplachScreen : AppCompatActivity(), Observer {
                             Log.d(TAG, "onResponse: 1"+jsonobject1.getString("Msrno"))
                             Log.d(TAG, "onResponse: 2"+jsonobject1.getString("Membertype"))
                             startActivity(Intent(this@SplachScreen,DashboardActivity::class.java))
+                            unregisterReceiver(MyReceiver1)
                         }
                     }
                     else{
-                        pDialog!!.visibility=View.GONE
+
+                        var i:Intent
+                        i=Intent(this@SplachScreen,Login_Activity::class.java)
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        startActivity(i)
                         Toast.makeText(this@SplachScreen,"Bad Response ! ",Toast.LENGTH_LONG).show()
+                        showDialog()
                     }
                 }else{
                     pDialog!!.visibility=View.GONE
                     Toast.makeText(this@SplachScreen,"Bad Response ! ",Toast.LENGTH_LONG).show()
+                    showDialog()
                 }
 
             }
 
         })
     }
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun isOnline(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (connectivityManager != null) {
-            val capabilities =
-                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-            if (capabilities != null) {
-                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                    Log.i("@@Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
-                    return true
-                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                    Log.i("@Internet", "NetworkCapabilities.TRANSPORT_WIFI")
-                    return true
-                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                    Log.i("@@Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
-                    return true
-                }
+    inner public open class Network_reciver() : BroadcastReceiver() {
+
+        override fun onReceive(context: Context, intent: Intent) {
+
+
+            var status: String = NetworkUtil.getConnectivityStatusString(context)!!
+            Log.d(TAG, "onReceive: "+status)
+            if(status.equals("No internet is available"))
+            {
+                blockActivity(false,context)
+            }else{
+                Log.d("@@", "onReceive: 3")
+                blockActivity(true,context)
             }
         }
-        return false
-    }
 
-    override fun update(p0: Observable?, p1: Any?) {
-        ObservableObject.getInstance().updateValue(intent)
-        Log.d(TAG, "update: >>")
-    }
+        fun blockActivity(connected: Boolean,context: Context) {
+            var pausingDialog:SweetAlertDialog?=null
+            Log.d(TAG, "blockActivity: "+connected.toString())
+            if (pausingDialog == null) {
+                pausingDialog =SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                pausingDialog!!.titleText = "Application waiting for internet connection..."
+                pausingDialog!!.setCancelable(false)
+                pausingDialog!!.setConfirmClickListener{
+                    var MyReceiver: BroadcastReceiver?= null;
+                    MyReceiver = MyReceiver();
+                    context.registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+                    pausingDialog!!.dismiss()
+                }
+            }
 
+            if (!connected) {
+                if (!(context as Activity).isFinishing) {
+                    pausingDialog!!.show()
+
+                }
+            } else {
+                if(pausingDialog!!.isShowing){
+                pausingDialog!!.dismiss()}
+                Log.d(TAG, "blockActivity: 1_"+(mLocal_data.ReadStringPreferences(Constances.PREF_Mobile)).toString().length)
+                if ((mLocal_data.ReadStringPreferences(Constances.PREF_Mobile).length)>4){
+                login()}
+                else{
+                    startActivity(Intent(this@SplachScreen,Login_Activity::class.java))}
+            }
+        }
+    }
+    fun showDialog(){
+        var pausingDialog:SweetAlertDialog?=null
+        if (pausingDialog == null) {
+            pausingDialog =SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+            pausingDialog!!.titleText = "Something Wrong \n go to login panel."
+            pausingDialog!!.setCancelable(false)
+            pausingDialog!!.setConfirmClickListener{
+                pausingDialog!!.dismiss()
+                startActivity(Intent(this@SplachScreen,Login_Activity::class.java))
+            }
+        }
+        pausingDialog.show()
+    }
 }

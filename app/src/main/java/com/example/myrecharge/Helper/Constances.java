@@ -1,8 +1,6 @@
 package com.example.myrecharge.Helper;
 
-import android.content.Intent;
-
-public class Constances {
+public class Constances  {
 
     public static String PREF_base_url = "http://recharge.codunite.com/Mobileapi.asmx/";
     public static String PREF_Msrno="Msrno";

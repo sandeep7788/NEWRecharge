@@ -14,7 +14,6 @@ import com.example.myrecharge.Activitys.Manus.Pay_Activity
 class Permission_Advance :Pay_Activity {
     private val PERMISSION_REQUEST_CODE = 101
     lateinit var context:Context
-    var TAG="@@permiossion"
     var permission:String="0"
 
     constructor(context: Context)

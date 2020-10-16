@@ -1,7 +1,13 @@
 package com.example.myrecharge.Activitys
 
+import android.Manifest
 import android.annotation.SuppressLint
-import android.content.*
+import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.ConnectivityManager
@@ -12,15 +18,21 @@ import android.util.Log
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.example.myrecharge.Fragment.*
-import com.example.myrecharge.Helper.Local_data
+import com.example.myrecharge.Fragment.Home_Fragment
+import com.example.myrecharge.Fragment.Profile_Fragment
+import com.example.myrecharge.Fragment.Setting_fragment
+import com.example.myrecharge.Fragment.WalletFragment
 import com.example.myrecharge.Helper.Constances
+import com.example.myrecharge.Helper.Local_data
 import com.example.myrecharge.R
 import com.example.myrecharge.databinding.ActivityDashboardBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,6 +44,8 @@ class DashboardActivity : AppCompatActivity() {
     lateinit var mainBinding : ActivityDashboardBinding
     lateinit var transaction:FragmentTransaction
     var pref= Local_data(this@DashboardActivity)
+    var  CAMERA_PERMISSION_CODE = 100
+    var  STORAGE_PERMISSION_CODE = 101
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +55,7 @@ class DashboardActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this,R.layout.activity_dashboard)
 
         var MyReceiver: BroadcastReceiver?= null;
-        MyReceiver = com.example.myrecharge.Helper.MyReceiver()
+        MyReceiver = MyReceiver()
         registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
 
@@ -53,19 +67,18 @@ class DashboardActivity : AppCompatActivity() {
             .commitAllowingStateLoss()
         bottomNavigationbar()
         genrate_qr_code()
+        checkPermission(arrayOf(Manifest.permission.CAMERA,Manifest.permission.READ_PHONE_NUMBERS,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE),CAMERA_PERMISSION_CODE)
 
-  
     }
 
     @SuppressLint("WrongConstant")
     fun bottomNavigationbar()
     {
-// mainBinding.bottomNavigation.setItemIconTintList(R.color.Gold_color)
         val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
 //                    setFram(Home_Fragment())
-                    
+
                     val newFragment = Home_Fragment()
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frame, newFragment, "home")
@@ -107,8 +120,6 @@ class DashboardActivity : AppCompatActivity() {
     @SuppressLint("WrongConstant")
         fun setFram(fram: Fragment)
         {
-    // initial transaction should be wrapped like this
-            ;
             val newFragment = fram
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frame, newFragment, "fragmente")
@@ -189,8 +200,11 @@ class DashboardActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         val fl: FrameLayout = findViewById(R.id.frame) as FrameLayout
+        var  mBottomNavigationView = mainBinding.navigation
+        mBottomNavigationView.getMenu().findItem(R.id.navigation_home).setChecked(true)
         if (fl.getChildCount() === 1) {
-            super.onBackPressed()
+            exit_dialog()
+
             if (fl.getChildCount() === 0) {
 
 
@@ -203,5 +217,62 @@ class DashboardActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    fun checkPermission(permission: Array<out String>, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(this@DashboardActivity, permission[0]) === PackageManager.PERMISSION_DENIED) {
+
+            // Requesting the permission
+            ActivityCompat.requestPermissions(
+                this@DashboardActivity, permission,
+                requestCode
+            )
+        } else {
+            Toast.makeText(
+                this@DashboardActivity,
+                "Permission already granted",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.size > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this,
+                    "Camera Permission Granted",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            }
+            else {
+                Toast.makeText(this,
+                    "Camera Permission Denied",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            }
+        }
+        else if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.size > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this,
+                    "Storage Permission Granted",
+                    Toast.LENGTH_SHORT)
+                    .show();
+
+            }
+            else {
+                Toast.makeText(this,
+                    "Storage Permission Denied",
+                    Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
     }
 }

@@ -17,9 +17,11 @@ interface ApiInterface {
         @Header("Password") Password: String?
     ): Call<JsonObject>
 
+    @POST("loginprocess")
     fun getbalance(
         @Header("Membermsrno") Membermsrno: String?): Call<JsonObject>
 
+    @POST("getoperatordetails")
     fun getoperatordetails(
         @Header("operatortype") username: String?
     ): Call<JsonObject>

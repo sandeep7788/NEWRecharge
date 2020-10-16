@@ -11,7 +11,9 @@
     <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,11 +23,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m"
-        tools:replace="android:icon">
-
-        <activity android:name=".Activitys.Manus.Scanner_Activity">
-        </activity>
+        tools:replace="android:icon"
+        tools:targetApi="m">
+        <activity android:name=".Activitys.Manus.Demo"></activity>
+        <activity android:name=".Activitys.Manus.Scanner_Activity" />
         <activity android:name=".Activitys.ChangePassword_Activity" />
         <activity android:name=".Activitys.AccountDetails_Activity" />
         <activity android:name=".Activitys.Personal_detailsActivity" />
@@ -42,7 +43,7 @@
         <activity android:name=".Activitys.Manus.Pay_Activity" />
         <activity android:name=".Activitys.Pay_Activity2" />
         <activity android:name=".Activitys.Manus.Prepaid_Activity" />
-
+        <activity android:name=".Activitys.ValueFilter"/>
     </application>
 
 </manifest>

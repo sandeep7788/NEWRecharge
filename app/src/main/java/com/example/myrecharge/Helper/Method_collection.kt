@@ -4,16 +4,19 @@ import android.R
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Application
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.DialogInterface
+import android.content.IntentFilter
 import android.graphics.Color
+import android.net.ConnectivityManager
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.sandeep.AndroidDialog.AndroidDialog
 import dmax.dialog.SpotsDialog
 
-class Method_collection : Application
+public open class Method_collection
 {
     var context:Context ?=null
     lateinit var dialog: AlertDialog
@@ -100,5 +103,10 @@ class Method_collection : Application
             })
         builderSingle.show()
         return strName
+    }
+    fun NetworkServices(){
+        var MyReceiver: BroadcastReceiver?= null;
+        MyReceiver = com.example.myrecharge.Activitys.MyReceiver()
+        context?.registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 }

@@ -1,13 +1,10 @@
 package com.example.myrecharge.Activitys
 
-import android.app.AlertDialog
 import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -25,8 +22,6 @@ import com.example.myrecharge.Helper.RetrofitManager
 import com.example.myrecharge.R
 import com.example.myrecharge.databinding.ActivityLoginBinding
 import com.google.gson.JsonObject
-import de.mateware.snacky.Snacky
-import dmax.dialog.SpotsDialog
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
@@ -54,7 +49,7 @@ class Login_Activity: AppCompatActivity() {
         pDialog!!.setCancelable(false)
 
         var MyReceiver: BroadcastReceiver? = null;
-        MyReceiver = com.example.myrecharge.Helper.MyReceiver()
+        MyReceiver = MyReceiver()
         registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
 
