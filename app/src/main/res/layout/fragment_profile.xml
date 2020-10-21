@@ -33,36 +33,43 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="15dp">
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:foregroundGravity="center">
 
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_gravity="center">
+                        android:layout_gravity="center"
+                        android:foregroundGravity="center">
 
                         <de.hdodenhof.circleimageview.CircleImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:id="@+id/circleImageView"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
                             android:layout_gravity="center"
-                            android:layout_marginTop="9dp"
-                            android:layout_marginRight="25dp"
-                            android:layout_marginLeft="25dp"
+                            android:background="@drawable/icon1"
+                            android:backgroundTint="@color/c_white"
                             android:foregroundGravity="center"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/user"/>
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:id="@+id/edit_update"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_baseline_edit_24"
                             android:layout_gravity="right"
-                            android:foregroundGravity="center" />
+                            android:foregroundGravity="center"
+                            android:src="@drawable/ic_baseline_edit_24"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/circleImageView" />
 
 
-                    </LinearLayout>
-
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -70,11 +77,12 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="9dp"
                         android:fontFamily="@font/worksans_medium"
-                        android:text="  Admin"
+                        android:text="Admin"
                         android:textColor="@color/white_color"
-                        android:textSize="19dp"
-                        android:textStyle="bold"/>
-
+                        android:textSize="@dimen/text"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:foregroundGravity="center"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -88,7 +96,7 @@
                             android:layout_marginRight="9dp"
                             android:text="Active"
                             android:textColor="@color/c_white"
-                            android:textSize="15dp"
+                            android:textSize="@dimen/text"
                             android:textStyle="bold" />
 
                         <View
@@ -105,7 +113,7 @@
                             android:layout_marginRight="9dp"
                             android:text="Male"
                             android:textColor="@color/white_color"
-                            android:textSize="15dp"
+                            android:textSize="@dimen/text"
                             android:textStyle="bold" />
 
                         <View
@@ -121,7 +129,7 @@
                             android:layout_marginLeft="9dp"
                             android:text="Born 25-09-1995"
                             android:textColor="@color/white_color"
-                            android:textSize="15dp"
+                            android:textSize="@dimen/text"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -129,9 +137,7 @@
 
 
 
-
-
-                        <LinearLayout
+                        <!--<LinearLayout
                             android:layout_marginTop="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -251,7 +257,121 @@
 
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
+                    </LinearLayout>-->
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/profile_layout"
+                        android:layout_marginTop="45dp"
+                        android:orientation="vertical"
+                        android:layout_gravity="bottom"
+                        android:gravity="bottom"
+                        android:foregroundGravity="bottom">
+
+                        <LinearLayout
+                            android:id="@+id/btn_persnal_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="9dp"
+                            android:elevation="9dp"
+                            android:layout_marginTop="9dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Personal Details"
+                                android:fontFamily="@font/worksans_medium"
+                                android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+                                android:drawableTint="@color/c_white"
+                                android:textColor="@color/white_color"
+                                android:backgroundTint="@color/white_color"
+                                android:foregroundTint="@color/white_color"
+                                android:textSize="15dp"
+                                android:drawablePadding="1dp"
+                                android:layout_marginRight="9dp"
+                                android:layout_gravity="center"
+                                android:gravity="left"
+                                android:layout_marginLeft="9dp"
+                                android:layout_marginTop="9dp"
+                                android:paddingTop="9dp"
+                                android:paddingBottom="9dp"/>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/c_white"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/btn_Account_Details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="9dp"
+                            android:elevation="9dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Account Details"
+                                android:fontFamily="@font/worksans_medium"
+                                android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+                                android:drawableTint="@color/c_white"
+                                android:textColor="@color/c_white"
+                                android:textSize="15dp"
+                                android:drawablePadding="1dp"
+                                android:layout_marginRight="9dp"
+                                android:layout_gravity="center"
+                                android:gravity="left"
+                                android:layout_marginLeft="9dp"
+                                android:layout_marginTop="9dp"
+                                android:paddingTop="9dp"
+                                android:paddingBottom="9dp"/>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/c_white"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/btn_Change_Password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="9dp"
+                            android:elevation="9dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Change Password"
+                                android:fontFamily="@font/worksans_medium"
+                                android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+                                android:drawableTint="@color/c_white"
+                                android:textColor="@color/c_white"
+                                android:textSize="15dp"
+                                android:drawablePadding="1dp"
+                                android:layout_marginRight="9dp"
+                                android:layout_gravity="center"
+                                android:gravity="left"
+                                android:layout_marginLeft="9dp"
+                                android:layout_marginTop="9dp"
+                                android:paddingTop="9dp"
+                                android:paddingBottom="9dp"/>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/c_white"/>
+
+                        </LinearLayout>
                     </LinearLayout>
+
 
 
 

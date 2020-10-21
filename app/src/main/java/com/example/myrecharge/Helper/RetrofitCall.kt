@@ -31,7 +31,6 @@ class RetrofitCall {
     {
         var mResponse="0"
         override fun doInBackground(vararg p0: String?): String? {
-            var apiInterface:ApiInterface=RetrofitManager.instance!!.create(ApiInterface::class.java)
 
             return mResponse
         }

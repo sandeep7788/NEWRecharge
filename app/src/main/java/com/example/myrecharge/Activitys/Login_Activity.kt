@@ -76,7 +76,7 @@ class Login_Activity: AppCompatActivity() {
     fun login()
     {
         pDialog!!.show()
-        var apiInterface:ApiInterface=RetrofitManager.instance!!.create(ApiInterface::class.java)
+        var apiInterface:ApiInterface=RetrofitManager(this).instance!!.create(ApiInterface::class.java)
 
         apiInterface.getLogin(mainBinding.edtLoginID.text.toString(),mainBinding.edtPassword.text.toString()).
     enqueue(object :Callback<JsonObject>

@@ -2,7 +2,6 @@ package com.example.myrecharge.Activitys
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -16,9 +15,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
-import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +23,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.fragment.app.FragmentTransaction
 import com.example.myrecharge.Fragment.Home_Fragment
 import com.example.myrecharge.Fragment.Profile_Fragment
@@ -46,6 +45,8 @@ class DashboardActivity : AppCompatActivity() {
     var pref= Local_data(this@DashboardActivity)
     var  CAMERA_PERMISSION_CODE = 100
     var  STORAGE_PERMISSION_CODE = 101
+    var FRAGMENT_OTHER="FRAGMENT_OTHER"
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,74 +58,37 @@ class DashboardActivity : AppCompatActivity() {
         var MyReceiver: BroadcastReceiver?= null;
         MyReceiver = MyReceiver()
         registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        setFram(Home_Fragment())
 
-
-
-        val newFragment = Home_Fragment()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frame, newFragment, "home")
-            .addToBackStack(null)
-            .commitAllowingStateLoss()
-        bottomNavigationbar()
-        genrate_qr_code()
-        checkPermission(arrayOf(Manifest.permission.CAMERA,Manifest.permission.READ_PHONE_NUMBERS,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE),CAMERA_PERMISSION_CODE)
-
-    }
-
-    @SuppressLint("WrongConstant")
-    fun bottomNavigationbar()
-    {
-        val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        mainBinding.navigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
-//                    setFram(Home_Fragment())
-
-                    val newFragment = Home_Fragment()
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame, newFragment, "home")
-                        .addToBackStack(null)
-                        .commitAllowingStateLoss()
-//                    mainBinding.navigation.menu.findItem(android.R.id.navigation_home).isChecked = true
-
-                    mainBinding.navigation.menu.findItem(R.id.navigation_home).isChecked = true
-                    true
+                    viewFragment(Home_Fragment(), "FRAGMENT_HOME")
                 }
                 R.id.navigation_Wallet -> {
-                    mainBinding.navigation.menu.findItem(R.id.navigation_Wallet).isChecked = true
-                    setFram(WalletFragment())
-// handle cli
-
-                    true
+                    viewFragment(WalletFragment(), FRAGMENT_OTHER)
                 }
                 R.id.navigation_profile -> {
-                    mainBinding.navigation.menu.findItem(R.id.navigation_profile).isChecked = true
-                    Log.e("@@naviagtionbar_log", "reward")
-                    setFram(Profile_Fragment())
-// handle clil
-                    true
+                    viewFragment(Profile_Fragment(), FRAGMENT_OTHER)
                 }
                 R.id.setting -> {
-                    mainBinding.navigation.menu.findItem(R.id.setting).isChecked = true
-                    Log.e("@@naviagtionbar_log", "reward")
-                    setFram(Setting_fragment())
-// handle clil
-                    true
+                    viewFragment(Setting_fragment(), FRAGMENT_OTHER)
                 }
-
             }
-            false
-        }
-        mainBinding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+            true
+        })
+        genrate_qr_code()
+        checkPermission(arrayOf(Manifest.permission.CAMERA,Manifest.permission.READ_PHONE_NUMBERS,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE),CAMERA_PERMISSION_CODE)
     }
 
     @SuppressLint("WrongConstant")
         fun setFram(fram: Fragment)
         {
-            val newFragment = fram
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.frame, newFragment, "fragmente")
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
+            val fragmentManager: FragmentManager = supportFragmentManager
+            val fragmentTransaction =
+                fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.frame,fram)
+            fragmentTransaction.commit()
         }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -150,8 +114,43 @@ class DashboardActivity : AppCompatActivity() {
         return false
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
 
+    }
 
+    private fun viewFragment(
+        fragment: Fragment,
+        name: String
+    ) {
+        var fragmentManager: FragmentManager = supportFragmentManager
+        val fragmentTransaction =
+            fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame, fragment)
+        // 1. Know how many fragments there are in the stack
+        val count = fragmentManager.backStackEntryCount
+        // 2. If the fragment is **not** "home type", save it to the stack
+        if (name == FRAGMENT_OTHER) {
+            fragmentTransaction.addToBackStack(name)
+        }
+        // Commit !
+        fragmentTransaction.commit()
+        // 3. After the commit, if the fragment is not an "home type" the back stack is changed, triggering the
+        // OnBackStackChanged callback
+        fragmentManager.addOnBackStackChangedListener(object :
+            FragmentManager.OnBackStackChangedListener {
+            override fun onBackStackChanged() {
+                // If the stack decreases it means I clicked the back button
+                if (fragmentManager.backStackEntryCount <= count) {
+                    // pop all the fragment and remove the listener
+                    fragmentManager.popBackStack(FRAGMENT_OTHER, POP_BACK_STACK_INCLUSIVE)
+                    fragmentManager.removeOnBackStackChangedListener(this)
+                    // set the home button selected
+                    mainBinding.navigation.getMenu().getItem(0).setChecked(true)
+                }
+            }
+        })
+    }
 
     fun genrate_qr_code()
     {
@@ -197,28 +196,6 @@ class DashboardActivity : AppCompatActivity() {
         alertDialog.setCancelable(false)
         alertDialog.show()
     }
-
-    override fun onBackPressed() {
-        val fl: FrameLayout = findViewById(R.id.frame) as FrameLayout
-        var  mBottomNavigationView = mainBinding.navigation
-        mBottomNavigationView.getMenu().findItem(R.id.navigation_home).setChecked(true)
-        if (fl.getChildCount() === 1) {
-            exit_dialog()
-
-            if (fl.getChildCount() === 0) {
-
-
-
-                // load your first Fragment here
-                exit_dialog()
-            }
-        } else if (fl.getChildCount() === 0) {
-            // load your first Fragment here
-        } else {
-            super.onBackPressed()
-        }
-    }
-
     fun checkPermission(permission: Array<out String>, requestCode: Int) {
         if (ContextCompat.checkSelfPermission(this@DashboardActivity, permission[0]) === PackageManager.PERMISSION_DENIED) {
 

@@ -1,5 +1,7 @@
 package com.example.myrecharge.Helper
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,8 +15,9 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-object RetrofitManager {
+class RetrofitManager(var context: Context) {
     private var retrofit: Retrofit? = null
+    var pref= Local_data(context)
     val instance: Retrofit?
         get() {
             if (retrofit == null) {
@@ -23,7 +26,41 @@ object RetrofitManager {
                         .setLenient()
                         .create()
                     retrofit = Retrofit.Builder()
-                        .baseUrl(Constances.PREF_base_url)
+                        .baseUrl(pref.ReadStringPreferences(Constances.PREF_base_url)+Constances.PREF_Mid_url)
+                        .client(okHttpClient)
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .build()
+                }
+            }
+            return retrofit
+        }
+
+    val getUrl_instance: Retrofit?
+        get() {
+            if (retrofit == null) {
+                synchronized(RetrofitManager::class.java) {
+                    val gson = GsonBuilder()
+                        .setLenient()
+                        .create()
+                    retrofit = Retrofit.Builder()
+                        .baseUrl("https://paymyrecharge.in")
+                        .client(okHttpClient)
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .build()
+                }
+            }
+            return retrofit
+        }
+
+    val getDemo: Retrofit?
+        get() {
+            if (retrofit == null) {
+                synchronized(RetrofitManager::class.java) {
+                    val gson = GsonBuilder()
+                        .setLenient()
+                        .create()
+                    retrofit = Retrofit.Builder()
+                        .baseUrl("https://api.themoviedb.org/3/")
                         .client(okHttpClient)
                         .addConverterFactory(GsonConverterFactory.create(gson))
                         .build()
@@ -54,7 +91,7 @@ object RetrofitManager {
                     .connectTimeout(80, TimeUnit.SECONDS).build()
             val gson = GsonBuilder().serializeNulls().create()
             newRetrofit = Retrofit.Builder()
-                .baseUrl(Constances.PREF_base_url)
+                .baseUrl(Constances.PREF_base_url+Constances.PREF_MemberID)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build()

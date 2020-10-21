@@ -25,7 +25,7 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon"
         tools:targetApi="m">
-        <activity android:name=".Activitys.Manus.Demo"></activity>
+        <activity android:name=".Custom.CustomDialog"></activity>
         <activity android:name=".Activitys.Manus.Scanner_Activity" />
         <activity android:name=".Activitys.ChangePassword_Activity" />
         <activity android:name=".Activitys.AccountDetails_Activity" />
@@ -40,10 +40,10 @@
         </activity>
         <activity android:name=".Activitys.Login_Activity" />
         <activity android:name=".Activitys.DashboardActivity" />
-        <activity android:name=".Activitys.Manus.Pay_Activity" />
+        <activity android:name=".Activitys.Manus.AllMenu_Activity" />
         <activity android:name=".Activitys.Pay_Activity2" />
         <activity android:name=".Activitys.Manus.Prepaid_Activity" />
-        <activity android:name=".Activitys.ValueFilter"/>
+        <activity android:name=".Adapter.MainActivity1"/>
     </application>
 
 </manifest>

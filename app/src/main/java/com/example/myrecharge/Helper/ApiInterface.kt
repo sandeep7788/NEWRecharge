@@ -1,5 +1,7 @@
 package com.example.myrecharge.Helper
 
+import com.example.myrecharge.Models.TopRatedMovies
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.json.JSONObject
 import retrofit2.Call
@@ -10,6 +12,13 @@ interface ApiInterface {
 
 //https://therippco.com/api/wallet.ashx?f=t1&loginid=5002081557&
 // FromDate=11/11/1111&ToDate=&ttype=&start=10&length=20
+
+    @GET("movie/top_rated")
+    fun getTopRatedMovies(
+        @Query("api_key") apiKey: String?,
+        @Query("language") language: String?,
+        @Query("page") pageIndex: Int
+    ): Call<TopRatedMovies?>?
 
     @POST("loginprocess")
     fun getLogin(
@@ -23,7 +32,20 @@ interface ApiInterface {
 
     @POST("getoperatordetails")
     fun getoperatordetails(
-        @Header("operatortype") username: String?
+        @Header("operatortype") operatortype: String?
+    ): Call<JsonObject>
+
+    @GET("apimanager/APIUSE.aspx")
+    fun getUrl(
+        @Query("UrlName") UrlName: String?): Call<JsonArray>
+
+
+    @FormUrlEncoded
+    @POST("getrechargereport")
+    fun getrechargereport(
+        @Header("Membermsrno") Membermsrno: String?,
+        @Header("recordhistoryID") recordhistoryID: String?,
+        @Field("Rechargetype") Rechargetype:String
     ): Call<JsonObject>
 
     @POST("common.ashx?")

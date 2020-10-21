@@ -2,7 +2,8 @@ package com.example.myrecharge.Helper;
 
 public class Constances  {
 
-    public static String PREF_base_url = "http://recharge.codunite.com/Mobileapi.asmx/";
+    public static String PREF_base_url = "PREF_base_url/";
+    public static String PREF_Mid_url = "/Mobileapi.asmx/";
     public static String PREF_Msrno="Msrno";
     public static String PREF_Membertype="Membertype";
     public static String PREF_MemberID="MemberID";

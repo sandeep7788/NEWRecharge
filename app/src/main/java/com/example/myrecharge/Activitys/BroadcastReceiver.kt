@@ -5,11 +5,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color
 import android.net.ConnectivityManager
-import android.util.Log
 import cn.pedant.SweetAlert.SweetAlertDialog
-import de.mateware.snacky.Snacky
 
 public open class MyReceiver() : BroadcastReceiver() {
     var pausingDialog:SweetAlertDialog?=null
@@ -22,7 +19,7 @@ public open class MyReceiver() : BroadcastReceiver() {
         {
             blockActivity(false,context)
         }else{
-            Log.d("@@", "onReceive: 3")
+            /*Log.d("@@", "onReceive: 3")
             blockActivity(true,context)
             blockActivity(true,context)
             Snacky.builder()
@@ -35,7 +32,7 @@ public open class MyReceiver() : BroadcastReceiver() {
                 .setBackgroundColor(Color.parseColor("#041e37"))
                 .setDuration(Snacky.LENGTH_INDEFINITE)
                 .build()
-                .show()
+                .show()*/
         }
     }
 

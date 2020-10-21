@@ -9,9 +9,9 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
-import com.example.myrecharge.Activitys.Manus.Pay_Activity
+import com.example.myrecharge.Activitys.Manus.AllMenu_Activity
 
-class Permission_Advance :Pay_Activity {
+class Permission_Advance :AllMenu_Activity {
     private val PERMISSION_REQUEST_CODE = 101
     lateinit var context:Context
     var permission:String="0"

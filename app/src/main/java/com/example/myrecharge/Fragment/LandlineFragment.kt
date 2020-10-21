@@ -31,7 +31,7 @@ class LandlineFragment: Fragment() {
             browseContacts()
         }
 
-        setFram(Adapter())
+//        setFram(Adapter())
 
 
 

@@ -15,10 +15,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.example.myrecharge.Custom.CustomAlertAdapter;
 import com.example.myrecharge.Models.OperatorModel;
 import com.example.myrecharge.R;
-
 import java.util.ArrayList;
 
 public class ValueFilter implements  OnItemClickListener {
@@ -40,7 +39,7 @@ public class ValueFilter implements  OnItemClickListener {
     }
 
     public void onClick() {
-        AlertDialog.Builder myDialog = new AlertDialog.Builder(context,R.layout.operator_list_layout);
+        AlertDialog.Builder myDialog = new AlertDialog.Builder(context,R.layout.custom_dialog_layout);
 
 
         Log.d("##TitleName", "onResponse: "+TitleName.get(2).getOperatorName());

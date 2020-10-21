@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -22,19 +21,22 @@ import com.example.myrecharge.Helper.ApiInterface
 import com.example.myrecharge.Helper.Constances
 import com.example.myrecharge.Helper.Local_data
 import com.example.myrecharge.Helper.RetrofitManager
+import com.example.myrecharge.Helper.RetrofitManager1.getClient
 import com.example.myrecharge.R
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONArray
 import org.json.JSONObject
 import pl.droidsonroids.gif.GifImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SplachScreen : AppCompatActivity() {
-    private val SPLASH_TIME_OUT:Long = 3000 // 1 sec
-    var f39t: TextView? = null
-    var t1: TextView? = null
     var version: String? = null
     var mLocal_data= Local_data(this@SplachScreen)
     var mdevice:String="0000"
@@ -55,13 +57,42 @@ class SplachScreen : AppCompatActivity() {
         registerReceiver(MyReceiver1, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
     }
+    fun getUrl(){
+        var url_Interface: ApiInterface = RetrofitManager(this@SplachScreen).getUrl_instance!!.create(ApiInterface::class.java)
+        url_Interface.getUrl("Paymyrecharge").enqueue(object : Callback<JsonArray>{
+            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
+                Log.d(TAG, "onFailure: "+t.message.toString()+" ")
+                showDialog()
+            }
+
+            override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
+                Log.d(TAG, "onResponse: "+response.toString())
+                if (response.isSuccessful){
+                    var mjsonArray:JSONArray = JSONArray(response.body().toString())
+                    var mjsonObject:JSONObject = mjsonArray.getJSONObject(0)
+
+                    Log.d(TAG, "onResponse: url"+mjsonObject.getString("AppUrl"))
+                    Toast.makeText(this@SplachScreen," "+mjsonObject.getString("UrlName").toString(),Toast.LENGTH_LONG).show()
+
+                    mLocal_data.writeStringPreference(Constances.PREF_base_url,mjsonObject.getString("AppUrl"))
+                    if ((mLocal_data.ReadStringPreferences(Constances.PREF_Mobile).length)>4){
+                        login() }
+                    else{
+                        startActivity(Intent(this@SplachScreen,Login_Activity::class.java))
+                    }
+                }else{
+                    showDialog()
+                }
+            }
+        })
+    }
 
     fun login()
     {
         Log.d(TAG, "login: username"+mLocal_data.ReadStringPreferences(Constances.PREF_Mobile))
         Log.d(TAG, "login: password"+mLocal_data.ReadStringPreferences(Constances.PREF_Login_password))
         pDialog!!.visibility=View.VISIBLE
-        var apiInterface: ApiInterface = RetrofitManager.instance!!.create(ApiInterface::class.java)
+        var apiInterface: ApiInterface = RetrofitManager(this@SplachScreen).instance!!.create(ApiInterface::class.java)
 
         apiInterface.getLogin(mLocal_data.ReadStringPreferences(Constances.PREF_Mobile),mLocal_data.ReadStringPreferences(Constances.PREF_Login_password)).
         enqueue(object : Callback<JsonObject>
@@ -97,6 +128,7 @@ class SplachScreen : AppCompatActivity() {
                             Log.d(TAG, "onResponse: 2"+jsonobject1.getString("Membertype"))
                             startActivity(Intent(this@SplachScreen,DashboardActivity::class.java))
                             unregisterReceiver(MyReceiver1)
+                            finish()
                         }
                     }
                     else{
@@ -157,18 +189,16 @@ class SplachScreen : AppCompatActivity() {
             } else {
                 if(pausingDialog!!.isShowing){
                 pausingDialog!!.dismiss()}
+                getUrl()
                 Log.d(TAG, "blockActivity: 1_"+(mLocal_data.ReadStringPreferences(Constances.PREF_Mobile)).toString().length)
-                if ((mLocal_data.ReadStringPreferences(Constances.PREF_Mobile).length)>4){
-                login()}
-                else{
-                    startActivity(Intent(this@SplachScreen,Login_Activity::class.java))}
+
             }
         }
     }
     fun showDialog(){
         var pausingDialog:SweetAlertDialog?=null
+        pausingDialog =SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
         if (pausingDialog == null) {
-            pausingDialog =SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
             pausingDialog!!.titleText = "Something Wrong \n go to login panel."
             pausingDialog!!.setCancelable(false)
             pausingDialog!!.setConfirmClickListener{
@@ -176,6 +206,8 @@ class SplachScreen : AppCompatActivity() {
                 startActivity(Intent(this@SplachScreen,Login_Activity::class.java))
             }
         }
-        pausingDialog.show()
+        if (!pausingDialog.isShowing){
+            pausingDialog.show()
+        }
     }
 }

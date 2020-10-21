@@ -22,8 +22,8 @@ public class Local_data extends Application  {
     public  SharedPreferences mPreferences;
     private  Local_data mInstance;
 
-    public Local_data(Context context){
-        MY_APP_CONTEXT = context;
+    public Local_data(Context MY_APP_CONTEXT){
+        this.MY_APP_CONTEXT = MY_APP_CONTEXT;
     }
     public  Context getMyappContext() {
         return MY_APP_CONTEXT;
