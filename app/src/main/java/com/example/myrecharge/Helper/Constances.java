@@ -24,6 +24,9 @@ public class Constances  {
     public static String PREF_totaldirect = "totaldirect";
     public static String status1 = "status1";
     public static String PREF_device = "PREF_device";
-    public static String PREF_Address = "PREF_device";
-    public static String PREF_Balance = "PREF_device";
+    public static String PREF_Address = "PREF_Address";
+    public static String PREF_Balance = "PREF_Balance";
+    public static String PREF_operator_code = "PERF_Operoto_code";
+    public static String PREF_amt = "PREF_amt";
+    public static String PREF_temp_number = "PREF_temp_number";
 }

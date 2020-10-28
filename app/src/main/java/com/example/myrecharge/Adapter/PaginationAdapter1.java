@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import com.example.myrecharge.Models.RechargereportModel;
+import com.example.myrecharge.Models.RechargePlaneModel;
 import com.example.myrecharge.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,23 +22,23 @@ public class PaginationAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int ITEM = 0;
     private static final int LOADING = 1;
 
-    private List<RechargereportModel> movies;
+    private List<RechargePlaneModel> movies;
     private Context context;
 
     private boolean isLoadingAdded = false;
     String TAG="@@PagingAdapter";
 
-    public PaginationAdapter1(Context context,List<RechargereportModel> movies) {
+    public PaginationAdapter1(Context context,List<RechargePlaneModel> movies) {
         this.context = context;
         this.movies=movies;
         movies = new ArrayList<>();
     }
 
-    public List<RechargereportModel> getMovies() {
+    public List<RechargePlaneModel> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<RechargereportModel> movies) {
+    public void setMovies(List<RechargePlaneModel> movies) {
         this.movies = movies;
     }
 
@@ -71,7 +71,7 @@ public class PaginationAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        RechargereportModel movie = movies.get(position);
+        RechargePlaneModel movie = movies.get(position);
 
         switch (getItemViewType(position)) {
             case ITEM:
@@ -115,18 +115,18 @@ public class PaginationAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
-    public void add(RechargereportModel mc) {
+    public void add(RechargePlaneModel mc) {
         movies.add(mc);
         notifyItemInserted(movies.size() - 1);
     }
 
-    public void addAll(List<RechargereportModel> mcList) {
-        for (RechargereportModel mc : mcList) {
+    public void addAll(List<RechargePlaneModel> mcList) {
+        for (RechargePlaneModel mc : mcList) {
             add(mc);
         }
     }
 
-    public void remove(RechargereportModel city) {
+    public void remove(RechargePlaneModel city) {
         int position = movies.indexOf(city);
         if (position > -1) {
             movies.remove(position);
@@ -148,14 +148,14 @@ public class PaginationAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new RechargereportModel());
+        add(new RechargePlaneModel());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = movies.size() - 1;
-        RechargereportModel item = getItem(position);
+        RechargePlaneModel item = getItem(position);
 
         if (item != null) {
             movies.remove(position);
@@ -163,7 +163,7 @@ public class PaginationAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public RechargereportModel getItem(int position) {
+    public RechargePlaneModel getItem(int position) {
         return movies.get(position);
     }
 

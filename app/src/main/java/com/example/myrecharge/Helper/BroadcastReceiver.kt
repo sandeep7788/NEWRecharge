@@ -1,31 +1,29 @@
 package com.example.myrecharge.Helper
 
 import android.app.Activity
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.graphics.Color
+import android.content.*
 import android.net.ConnectivityManager
 import android.util.Log
+import androidx.core.content.ContextCompat.startActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.example.myrecharge.Helper.RetrofitManager1.getInstance
-import de.mateware.snacky.Snacky
+import com.example.myrecharge.Activitys.NetworkUtil
+
 
 public open class MyReceiver() : BroadcastReceiver() {
     var pausingDialog:SweetAlertDialog?=null
     override fun onReceive(context: Context, intent: Intent) {
 
-        ObservableObject.getInstance().updateValue(intent)
-        var status: String = NetworkUtil.getConnectivityStatusString(context)!!
-
+        var status: String = NetworkUtil.getConnectivityStatusString(
+            context
+        )!!
         if(status.equals("No internet is available"))
         {
-
             blockActivity(false,context)
         }else{
             Log.d("@@", "onReceive: 3")
-            /*blockActivity(true,context)
+            blockActivity(true,context)
+            blockActivity(true,context)
+/*
             Snacky.builder()
                 .setActivity(context as Activity?)
                 .setActionText("Hide")
@@ -36,11 +34,10 @@ public open class MyReceiver() : BroadcastReceiver() {
                 .setBackgroundColor(Color.parseColor("#041e37"))
                 .setDuration(Snacky.LENGTH_INDEFINITE)
                 .build()
-
-                .show()*/
+                .show()
+*/
         }
     }
-
 
     fun blockActivity(connected: Boolean,context: Context) {
 
@@ -49,9 +46,16 @@ public open class MyReceiver() : BroadcastReceiver() {
             pausingDialog!!.titleText = "Application waiting for internet connection..."
             pausingDialog!!.setCancelable(false)
             pausingDialog!!.setConfirmClickListener{
+                pausingDialog!!.dismiss()
                 var MyReceiver: BroadcastReceiver?= null;
-                MyReceiver = com.example.myrecharge.Helper.MyReceiver();
+                MyReceiver = MyReceiver();
                 context.registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+                val intent = Intent()
+                intent.component = ComponentName(
+                    "com.android.settings",
+                    "com.android.settings.Settings\$DataUsageSummaryActivity"
+                )
+                context.startActivity(intent)
             }
         }
         if (!connected) {
@@ -59,7 +63,8 @@ public open class MyReceiver() : BroadcastReceiver() {
                 pausingDialog!!.show()
             }
         } else {
-            pausingDialog!!.dismiss()
+            if (pausingDialog!!.isShowing){
+            pausingDialog!!.dismiss()}
         }
     }
 }

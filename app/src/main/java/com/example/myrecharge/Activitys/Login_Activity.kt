@@ -49,7 +49,7 @@ class Login_Activity: AppCompatActivity() {
         pDialog!!.setCancelable(false)
 
         var MyReceiver: BroadcastReceiver? = null;
-        MyReceiver = MyReceiver()
+        MyReceiver = com.example.myrecharge.Helper.MyReceiver()
         registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
 

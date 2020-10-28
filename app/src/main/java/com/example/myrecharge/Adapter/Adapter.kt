@@ -55,7 +55,7 @@ class Adapter : Fragment() {
 
         mainBinding.Recyclerview.layoutManager = LinearLayoutManager(thiscontext, LinearLayout.VERTICAL, false)
         mainBinding.Recyclerview.adapter =
-            ListAdapter1(data!!, thiscontext)
+//            BankListAdapter(data!!, thiscontext)
 
         return mainBinding.root
     }

@@ -7,12 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
@@ -30,13 +30,10 @@ import com.example.myrecharge.Fragment.Home_Fragment
 import com.example.myrecharge.Fragment.Profile_Fragment
 import com.example.myrecharge.Fragment.Setting_fragment
 import com.example.myrecharge.Fragment.WalletFragment
-import com.example.myrecharge.Helper.Constances
 import com.example.myrecharge.Helper.Local_data
 import com.example.myrecharge.R
 import com.example.myrecharge.databinding.ActivityDashboardBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.qrcode.QRCodeWriter
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -56,7 +53,7 @@ class DashboardActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this,R.layout.activity_dashboard)
 
         var MyReceiver: BroadcastReceiver?= null;
-        MyReceiver = MyReceiver()
+        MyReceiver = com.example.myrecharge.Helper.MyReceiver()
         registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         setFram(Home_Fragment())
 
@@ -77,7 +74,7 @@ class DashboardActivity : AppCompatActivity() {
             }
             true
         })
-        genrate_qr_code()
+
         checkPermission(arrayOf(Manifest.permission.CAMERA,Manifest.permission.READ_PHONE_NUMBERS,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE),CAMERA_PERMISSION_CODE)
     }
 
@@ -152,22 +149,7 @@ class DashboardActivity : AppCompatActivity() {
         })
     }
 
-    fun genrate_qr_code()
-    {
-        val content = pref.ReadStringPreferences(Constances.PREF_Login_Id)
 
-        val writer = QRCodeWriter()
-        val bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, 512, 512)
-        val width = bitMatrix.width
-        val height = bitMatrix.height
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
-        for (x in 0 until width) {
-            for (y in 0 until height) {
-                bitmap.setPixel(x, y, if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE)
-            }
-        }
-//        mainBinding.iQrcode.setImageBitmap(bitmap)
-    }
 
     fun exit_dialog()
     {
@@ -210,6 +192,7 @@ class DashboardActivity : AppCompatActivity() {
                 "Permission already granted",
                 Toast.LENGTH_SHORT
             ).show()
+
         }
     }
 
@@ -232,8 +215,26 @@ class DashboardActivity : AppCompatActivity() {
                     "Camera Permission Denied",
                     Toast.LENGTH_SHORT)
                     .show();
+                val requiredPermission = Manifest.permission.CAMERA
+                val checkVal: Int = checkCallingOrSelfPermission(requiredPermission)
+
+                if (checkVal==PackageManager.PERMISSION_GRANTED){
+
+
+                    Log.e(">>","if")
+
+                } else {
+                    Log.e(">>","else")
+                    startActivity(
+                        Intent(
+                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.parse("package:" + this.packageName)
+                        )
+                    )
+                }
             }
         }
+
         else if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.size > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

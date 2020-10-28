@@ -79,13 +79,13 @@
                                 app:hintTextColor="@color/c_gray2">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/edt_prepaid"
+                                    android:id="@+id/edt_number"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="Enter Number"
                                     android:textSize="@dimen/text"
                                     android:inputType="number"
-                                    android:textColor="@color/c_white"
+                                    android:textColor="@color/c_black"
                                     android:backgroundTint="@color/c_white"
                                     android:textColorHint="@color/c_white"/>
 
@@ -134,8 +134,10 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center|top"
                                     android:layout_margin="2dp"
-                                    android:text="Select Operator"
+                                    android:hint="Select Operator"
+                                    android:textColorHint="@color/c_gray1"
                                     android:textSize="@dimen/text"
+                                    android:text=""
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -180,7 +182,7 @@
                                 app:hintTextColor="@color/c_gray2">
 
                                 <EditText
-                                    android:id="@+id/editText"
+                                    android:id="@+id/txtSelectedRechargePlane"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center|top"
@@ -188,25 +190,27 @@
                                     android:backgroundTint="@color/c_white"
                                     android:hint="Amount"
                                     android:textSize="@dimen/text"
+                                    android:inputType="number"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
 
                                 <TextView
+                                    android:id="@+id/txt_browes_plane"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:layout_marginEnd="8dp"
-                                    android:text="Browse Plane"
+                                    android:fontFamily="@font/worksans_medium"
+                                    android:text="Browse Plans"
+                                    android:textColor="@color/c_blue_dark"
+                                    android:padding="2dp"
                                     android:textSize="@dimen/text"
                                     android:textStyle="normal"
-                                    android:fontFamily="@font/worksans_medium"
-                                    android:textColor="@color/c_blue_dark"
-                                    app:layout_constraintBottom_toBottomOf="@+id/editText"
-                                    app:layout_constraintEnd_toEndOf="@+id/editText"
+                                    app:layout_constraintBottom_toBottomOf="@+id/edt_bill_number"
+                                    app:layout_constraintEnd_toEndOf="@+id/txtSelectedRechargePlane"
                                     app:layout_constraintHorizontal_bias="1.0"
-                                    app:layout_constraintStart_toStartOf="@+id/editText"
+                                    app:layout_constraintStart_toStartOf="@+id/edt_bill_number"
                                     app:layout_constraintTop_toTopOf="parent" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -220,7 +224,7 @@
                         android:layout_marginLeft="35dp"/>
 
                     <Button
-                        android:id="@+id/btnSignIn"
+                        android:id="@+id/btn_process"
                         android:layout_width="wrap_content"
                         android:layout_height="39dp"
                         android:layout_marginTop="20dp"
@@ -230,132 +234,6 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:text="PROCESS TO RECHARGE"
-                        android:textColor="#ffffffff"
-                        android:layout_gravity="center"
-                        android:gravity="center"/>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/gas_layot"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingRight="9dp"
-                    android:layout_marginBottom="9dp"
-                    android:paddingBottom="25dp"
-                    android:paddingLeft="9dp"
-                    android:layout_marginTop="12dp"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_marginTop="9dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:padding="4dp">
-
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:foregroundGravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:src="@drawable/gas"
-                            app:tint="@color/c_gray2" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:orientation="vertical">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="2dp"
-                                android:hint="Gas Provider"
-                                app:hintTextColor="@color/c_gray2">
-
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/edt_Gas_Provider"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Gas Provider"
-                                    android:textSize="@dimen/text"
-                                    android:inputType="number"
-                                    android:textColor="@color/c_white"
-                                    android:backgroundTint="@color/c_white"
-                                    android:textColorHint="@color/c_white"/>
-
-                            </com.google.android.material.textfield.TextInputLayout>
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/c_gray2"
-                        android:layout_marginLeft="35dp"/>
-
-                    <LinearLayout
-                        android:layout_marginTop="2dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:padding="4dp">
-
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:foregroundGravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:src="@drawable/prepaid"
-                            app:tint="@color/c_gray2" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:orientation="vertical">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="2dp"
-                                android:hint="Customer Number"
-                                app:hintTextColor="@color/c_gray2">
-
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/edt_customer_number"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Customer Number"
-                                    android:textSize="@dimen/text"
-                                    android:inputType="number"
-                                    android:textColor="@color/c_white"
-                                    android:backgroundTint="@color/c_white"
-                                    android:textColorHint="@color/c_white"/>
-
-                            </com.google.android.material.textfield.TextInputLayout>
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-
-                    <Button
-                        android:id="@+id/btn_gas_pay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="39dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="3.0dip"
-                        android:background="@drawable/blue_button_background"
-                        android:fontFamily="@font/baloo"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:text="PROCESS TO PAY"
                         android:textColor="#ffffffff"
                         android:layout_gravity="center"
                         android:gravity="center"/>
@@ -450,18 +328,12 @@
 
                             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-                            <LinearLayout
-                                android:id="@id/main_progress"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:background="#ffffff"
-                                android:layout_gravity="bottom">
                             <ProgressBar
+                                android:id="@+id/main_progress"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"/>
-                            </LinearLayout>
+                                android:layout_gravity="center|bottom"
+                                android:elevation="4dp"/>
 
                         </FrameLayout>
 

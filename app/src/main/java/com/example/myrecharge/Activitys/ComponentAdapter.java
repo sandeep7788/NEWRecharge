@@ -34,7 +34,5 @@ public class ComponentAdapter extends ArrayAdapter<OperatorModel> {
         title.setText(cp.getOperatorName());
 
         return curView;
-
     }
-
 }

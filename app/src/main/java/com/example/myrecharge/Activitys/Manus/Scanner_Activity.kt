@@ -3,6 +3,7 @@ package com.example.myrecharge.Activitys.Manus
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -10,24 +11,23 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.budiyev.android.codescanner.*
 import com.example.myrecharge.Helper.Local_data
-import com.example.myrecharge.Helper.Permission_Advance
 import com.example.myrecharge.R
-import com.example.myrecharge.databinding.ActivityScannerBinding
+import com.example.myrecharge.databinding.ScannerDialogBinding
 
 class Scanner_Activity : AppCompatActivity() {
-    lateinit var mainBinding : ActivityScannerBinding
+    lateinit var mainBinding : ScannerDialogBinding
     var pref= Local_data(this@Scanner_Activity)
     private lateinit var codeScanner: CodeScanner
-    var p=Permission_Advance(this)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding =
-            DataBindingUtil.setContentView(this,R.layout.activity_scanner_)
+            DataBindingUtil.setContentView(this,R.layout.scanner_dialog)
         pref.setMyappContext(this@Scanner_Activity)
         codeScanner = CodeScanner(this,mainBinding.scannerView)
 
-//        start_scaner()
+
         checkPermission(arrayOf(
             Manifest.permission.CAMERA),101)
     }
@@ -67,7 +67,6 @@ class Scanner_Activity : AppCompatActivity() {
         }
     }
     override fun onPause() {
-        var p=Permission_Advance(this)
         codeScanner.releaseResources()
         super.onPause()
     }
@@ -80,14 +79,23 @@ class Scanner_Activity : AppCompatActivity() {
                 requestCode
             )
         } else {
-            Toast.makeText(
-                this@Scanner_Activity,
-                "Permission already granted",
-                Toast.LENGTH_SHORT
-            ).show()
-            start_scaner()
+            val requiredPermission = Manifest.permission.CAMERA
+            val checkVal: Int = checkCallingOrSelfPermission(requiredPermission)
+
+            if (checkVal==PackageManager.PERMISSION_GRANTED){
+//                start_scaner()
+                Log.e(">>","if")
+            } else {
+                Log.e(">>","else")
+                Toast.makeText(
+                    this@Scanner_Activity,
+                    "Please Allow Camera Permission.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

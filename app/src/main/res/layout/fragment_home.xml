@@ -72,6 +72,24 @@
                         app:layout_constraintVertical_bias="0.0" />
 
                     <ImageView
+                        android:id="@+id/img_qr"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center|right"
+                        android:layout_marginEnd="8dp"
+                        android:foregroundGravity="center|right"
+                        android:src="@drawable/qrcode"
+                        android:padding="4dp"
+                        android:tint="@color/c_blue_dark"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                    <ImageView
                         android:id="@+id/imageView2"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
@@ -247,6 +265,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/btn_history"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -378,6 +397,7 @@
                                 </LinearLayout>
 
                                 <LinearLayout
+                                    android:id="@+id/layout_paytomember"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center"
@@ -820,6 +840,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/btn_water"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -853,6 +874,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/btn_hotel"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"

@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:textStyle="normal"
+                android:inputType="text"
                 android:textColorHint="#939598"
                 android:textColor="#4b4f54"
                 android:hint="Search...."
@@ -73,22 +74,22 @@
 
     </LinearLayout>
 
-<!--
-    <Button
-        android:id="@+id/dialog_cancel_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:text="X"
-        android:textColor="#ffffff"
-        android:gravity="center"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/c_red"/>
--->
+    <!--
+        <Button
+            android:id="@+id/dialog_cancel_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:text="X"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/c_red"/>
+    -->
 
     <include layout="@layout/toolbar_layout"/>
 </RelativeLayout>

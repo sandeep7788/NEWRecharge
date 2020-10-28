@@ -1,9 +1,8 @@
 package com.example.myrecharge.Helper
 
-import com.example.myrecharge.Models.TopRatedMovies
+import com.example.myrecharge.Models.ModelRequestdetails
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -12,13 +11,6 @@ interface ApiInterface {
 
 //https://therippco.com/api/wallet.ashx?f=t1&loginid=5002081557&
 // FromDate=11/11/1111&ToDate=&ttype=&start=10&length=20
-
-    @GET("movie/top_rated")
-    fun getTopRatedMovies(
-        @Query("api_key") apiKey: String?,
-        @Query("language") language: String?,
-        @Query("page") pageIndex: Int
-    ): Call<TopRatedMovies?>?
 
     @POST("loginprocess")
     fun getLogin(
@@ -47,71 +39,79 @@ interface ApiInterface {
         @Header("recordhistoryID") recordhistoryID: String?,
         @Field("Rechargetype") Rechargetype:String
     ): Call<JsonObject>
-
-    @POST("common.ashx?")
-        @FormUrlEncoded
-        fun modelTransaction(
-            @Field("f") f: String?,
-            @Field("start") start: String?,
-            @Field("length") length: String?,
-            @Field("sponsor") sponsor: String?,
-            @Field("fdate") fdate: String?,
-            @Field("tdate") tdate: String?,
-            @Field("itemid") itemid: String?,
-            @Field("status") status: String?
-        ): Call<JSONObject?>?
-
-    @POST("wallet.ashx?")
+//http://recharge.codunite.com/Mobileapi.asmx/getrechargereport
     @FormUrlEncoded
-    fun passbook_getdaat(
-        @Field("f") f: String?,
-        @Field("loginid") loginid: String?,
-        @Field("FromDate") FromDate: String?,
-        @Field("ToDate") ToDate: String?,
-        @Field("ttype") ttype: String?,
-        @Field("start") start: String?,
-        @Field("length") length: String?
-    ): Call<JSONObject?>?
+    @POST("getrechargereport")
+    fun getRechargeprcess(
+        @Header("username") username: String?,
+        @Header("password") password: String?,
+        @Field("RechargeAmount") RechargeAmount:String,
+        @Field("Opreator") Opreator:String,
+        @Field("Number") Number:String
+    ): Call<JsonObject>
 
-    @POST("common.ashx?")
     @FormUrlEncoded
-    fun get_List(
-        @Field("f") f: String?,
-        @Field("loginid") loginid: String?,
-        @Field("password") password: String?,
-        @Field("ip") ip: String?
-    ): Call<JSONObject?>?
-//https://paymyrecharge.in/APIMANAGER/oparetor.aspx?Servertype=1
+    @POST("getWalletreport")
+    fun getHistory(
+        @Header("Membermsrno") Membermsrno: String?,
+        @Header("recordWalletID") recordhistoryID: String?,
+        @Field(".") Rechargetype:String
+    ): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST("getbalance")
+    fun getUserBalance(
+        @Header("Membermsrno") Membermsrno: String?,
+        @Field(".") Rechargetype:String
+    ): Call<JsonObject>
 
 
 
 
 
-    @GET("common.ashx?")
-    fun getUser(
-        @Query("f") f: String?,
-        @Query("loginid") loginid: String?
-    ): Call<JSONObject?>?
+    @FormUrlEncoded
+    @POST("GetPlandetails")
+    fun GetPlandetails(
+        @Field("Operator") Rechargetype:String
+    ): Call<ModelRequestdetails>
 
+    @FormUrlEncoded
+    @POST("billGetFatchbilleroperatordetails")
+    fun get_billGetFatchbilleroperatordetails(
+        @Header("username") username:String,
+        @Header("password") password:String,
+        @Field("Operator") Operator:String
+    ): Call<JsonObject>
 
-    @GET("a")
-    fun pay_amount(
-        @Query("f") f: String?,
-        @Query("fromloginid") fromloginid: String?,
-        @Query("tologinid") tologinid: String?,
-        @Query("amount") amount: String?,
-        @Query("pass") pass: String?,
-        @Query("ip") ip: String?
-    ): Call<JSONObject?>?
+    @FormUrlEncoded
+    @POST("billGetFatchdetails")
+    fun billGetFatchdetails(
+        @Field("Operator") Operator:String,
+        @Field("servicenum") servicenum:String
+    ): Call<JsonObject>
 
-    @GET("recharge.ashx?")
-    fun get_Recharge_services(
-        @Query("f") f: String?,
-        @Query("loginid") loginid: String?,
-        @Query("service_type") service_type: String?,
-        @Query("operator_code") operator_code: String?,
-        @Query("operator_name") operator_name: String?,
-        @Query("account_number") account_number: String?,
-        @Query("amount") amount: String?
-    ): Call<JSONObject?>?
+    @FormUrlEncoded
+    @POST("PayFatchMemberDeatils")
+    fun PayFatchMemberDeatils(
+        @Header("MemberID") MemberID:String
+    ): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST("PayFundtransfertomember")
+    fun PayFundtransfertomember(
+        @Header("FromMember") FromMember:String,
+        @Header("Tomember") Tomember:String,
+        @Field("Amount") Amount:String
+    ): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST("PayReportDeatils")
+    fun PayReportDeatils(
+        @Header("Membermsrno") Membermsrno:String,
+        @Header("recordPaymentID") recordPaymentID:String,
+        @Field(".") Amount:String
+    ): Call<JsonObject>
+
+    @POST("getAllbanknamedetails")
+    fun getAllbanknamedetails(): Call<JsonObject>
 }

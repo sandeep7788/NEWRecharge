@@ -2,10 +2,7 @@ package com.example.myrecharge.Activitys
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
@@ -21,20 +18,15 @@ import com.example.myrecharge.Helper.ApiInterface
 import com.example.myrecharge.Helper.Constances
 import com.example.myrecharge.Helper.Local_data
 import com.example.myrecharge.Helper.RetrofitManager
-import com.example.myrecharge.Helper.RetrofitManager1.getClient
 import com.example.myrecharge.R
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONArray
 import org.json.JSONObject
 import pl.droidsonroids.gif.GifImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class SplachScreen : AppCompatActivity() {
     var version: String? = null
@@ -45,6 +37,8 @@ class SplachScreen : AppCompatActivity() {
     lateinit var pDialog: ProgressBar
     val TAG="@@splachscreen"
     public var MyReceiver1: BroadcastReceiver? = null
+    var pausingDialog:SweetAlertDialog?=null
+    var mDialog:SweetAlertDialog?=null
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,11 +47,18 @@ class SplachScreen : AppCompatActivity() {
         mLocal_data.setMyappContext(this@SplachScreen)
         i_re_try=findViewById(R.id.i_re_try)
         pDialog=findViewById(R.id.progress_bar)
+        pausingDialog =SweetAlertDialog(this@SplachScreen, SweetAlertDialog.ERROR_TYPE)
+        pausingDialog!!.titleText = "Application waiting for internet connection..."
+        pausingDialog!!.setCancelable(false)
+        mDialog =SweetAlertDialog(this@SplachScreen, SweetAlertDialog.ERROR_TYPE)
+        mDialog!!.titleText = "Something Wrong go to login panel."
+        mDialog!!.contentText = "Something Wrong go to login panel."
+        mDialog!!.setCancelable(false)
         MyReceiver1 = Network_reciver()
         registerReceiver(MyReceiver1, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
     }
-    fun getUrl(){
+    fun getUrl() {
         var url_Interface: ApiInterface = RetrofitManager(this@SplachScreen).getUrl_instance!!.create(ApiInterface::class.java)
         url_Interface.getUrl("Paymyrecharge").enqueue(object : Callback<JsonArray>{
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
@@ -150,7 +151,7 @@ class SplachScreen : AppCompatActivity() {
 
         })
     }
-    inner public open class Network_reciver() : BroadcastReceiver() {
+    inner open class Network_reciver() : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
 
@@ -167,17 +168,31 @@ class SplachScreen : AppCompatActivity() {
         }
 
         fun blockActivity(connected: Boolean,context: Context) {
-            var pausingDialog:SweetAlertDialog?=null
+
             Log.d(TAG, "blockActivity: "+connected.toString())
             if (pausingDialog == null) {
-                pausingDialog =SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
-                pausingDialog!!.titleText = "Application waiting for internet connection..."
-                pausingDialog!!.setCancelable(false)
                 pausingDialog!!.setConfirmClickListener{
-                    var MyReceiver: BroadcastReceiver?= null;
-                    MyReceiver = MyReceiver();
+                   var MyReceiver: BroadcastReceiver?= null;
+                    MyReceiver = com.example.myrecharge.Helper.MyReceiver();
                     context.registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
                     pausingDialog!!.dismiss()
+
+                    val intent = Intent()
+                    intent.component = ComponentName(
+                        "com.android.settings",
+                        "com.android.settings.Settings\$DataUsageSummaryActivity"
+                    )
+                    startActivity(intent)
+                }
+                pausingDialog!!.setCancelClickListener {
+                    pausingDialog!!.dismiss()
+
+                    val intent = Intent()
+                    intent.component = ComponentName(
+                        "com.android.settings",
+                        "com.android.settings.Settings\$DataUsageSummaryActivity"
+                    )
+                    startActivity(intent)
                 }
             }
 
@@ -196,18 +211,41 @@ class SplachScreen : AppCompatActivity() {
         }
     }
     fun showDialog(){
-        var pausingDialog:SweetAlertDialog?=null
-        pausingDialog =SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-        if (pausingDialog == null) {
-            pausingDialog!!.titleText = "Something Wrong \n go to login panel."
-            pausingDialog!!.setCancelable(false)
-            pausingDialog!!.setConfirmClickListener{
-                pausingDialog!!.dismiss()
+
+        if (mDialog == null) {
+
+            mDialog!!.setConfirmClickListener{
+                mDialog!!.dismiss()
                 startActivity(Intent(this@SplachScreen,Login_Activity::class.java))
             }
+            mDialog!!.setCancelClickListener{
+                mDialog!!.dismiss()
+                startActivity(Intent(this@SplachScreen,Login_Activity::class.java))
+            }
+
         }
-        if (!pausingDialog.isShowing){
-            pausingDialog.show()
+        if (!mDialog?.isShowing!!){
+            mDialog?.show()
         }
     }
+
+    override fun onDestroy() {
+        try {
+            if (pausingDialog != null) pausingDialog?.dismiss()
+            if (mDialog != null) mDialog?.dismiss()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        super.onDestroy()
+    }
+
+/*    override fun onPause() {
+        try {
+            if (pausingDialog != null) pausingDialog?.dismiss()
+            if (mDialog != null) mDialog?.dismiss()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        super.onPause()
+    }*/
 }

@@ -1,33 +1,46 @@
 package com.example.myrecharge.Fragment
 
+import android.Manifest
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.example.myrecharge.Activitys.Manus.AllMenu_Activity
-import com.example.myrecharge.Activitys.Manus.Prepaid_Activity
+import cn.pedant.SweetAlert.SweetAlertDialog
+import com.example.myrecharge.Activitys.Manus.*
+import com.example.myrecharge.Custom_.QrDialog
+import com.example.myrecharge.Helper.ApiInterface
 import com.example.myrecharge.Helper.Constances
 import com.example.myrecharge.Helper.Local_data
+import com.example.myrecharge.Helper.RetrofitManager
 import com.example.myrecharge.R
 import com.example.myrecharge.databinding.FragmentHomeBinding
+import com.google.gson.JsonObject
 import com.sandeep.AndroidDialog.AndroidDialog
-
+import org.json.JSONArray
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class Home_Fragment: Fragment() {
     lateinit var thiscontext: Context
     lateinit var mainBinding : FragmentHomeBinding
     lateinit var transaction: FragmentTransaction
     var pref= Local_data(context)
+    var TAG="@@homefragment"
     override fun onCreateView(inflater:LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View?
     {
         pref.setMyappContext(context)
@@ -36,66 +49,126 @@ class Home_Fragment: Fragment() {
             R.layout.fragment_home, container, false
         )
         thiscontext=container!!.context
+        getBalance()
         initView()
         monClick()
+
+
+        cln()
 
         return mainBinding.root
     }
     fun initView(){
         mainBinding.txtBalance.text="₹ "+pref.ReadStringPreferences(Constances.PREF_Balance)
     }
+
     fun monClick()
     {
-        var intent:Intent ?=null
-        intent=Intent(context,Prepaid_Activity::class.java)
+        var mIntent:Intent ?=null
+        mIntent=Intent(context,Prepaid_Activity::class.java)
         mainBinding.btnPrepaid.setOnClickListener {
-            intent!!.putExtra("opt",1)
-            startActivity(intent) }
+            pref.writeIntPreference("opt",1)
+        startActivity(mIntent)}
 
         mainBinding.btnPostpaid.setOnClickListener {
-            intent!!.putExtra("opt",2)
-            startActivity(intent) }
+            pref.writeIntPreference("opt",2)
+            startActivity(mIntent) }
 
         mainBinding.btnDth.setOnClickListener {
-            intent!!.putExtra("opt",3)
-            startActivity(intent) }
+            pref.writeIntPreference("opt",3)
+            startActivity(mIntent) }
 
         mainBinding.btnElectric.setOnClickListener {
-            intent!!.putExtra("opt",4)
-            startActivity(intent) }
+            pref.writeIntPreference("opt",4)
+            startActivity(mIntent) }
 
         mainBinding.btnMTransfer.setOnClickListener {
-            intent!!.putExtra("opt",5)
-            startActivity(intent) }
+            startActivity(Intent(thiscontext,MoneyTrasfer::class.java)) }
 
         mainBinding.btnBus.setOnClickListener {
-            intent!!.putExtra("opt",6)
-            startActivity(intent) }
+            showDialog_commingSoon() }
 
         mainBinding.btnFlight.setOnClickListener {
-            intent!!.putExtra("opt",7)
-            startActivity(intent) }
+            showDialog_commingSoon() }
 
         mainBinding.btnDatacard.setOnClickListener {
-            intent!!.putExtra("opt",8)
-            startActivity(intent) }
+            showDialog_commingSoon() }
 
         mainBinding.btnGas.setOnClickListener {
-            intent!!.putExtra("opt",10)
-            startActivity(intent) }
+            showDialog_commingSoon() }
+        mainBinding.btnLadline.setOnClickListener {
+            showDialog_commingSoon() }
 
-        mainBinding.btnPay.setOnClickListener { startActivity(Intent(context,AllMenu_Activity::class.java)) }
+        mainBinding.btnWater.setOnClickListener {
+            showDialog_commingSoon() }
+
+        mainBinding.btnHotel.setOnClickListener {
+            showDialog_commingSoon() }
+
+        mainBinding.btnPay.setOnClickListener { startActivity(Intent(context,Pay_Activity::class.java)) }
+        mainBinding.btnHistory.setOnClickListener { startActivity(Intent(context,History_Activity::class.java)) }
+        mainBinding.btnElectric.setOnClickListener { startActivity(Intent(context,Electricity_Activity::class.java)) }
+        mainBinding.imgQr.setOnClickListener {
+
+            var mQrDialog : QrDialog
+              mQrDialog=
+                  QrDialog(activity)
+            mQrDialog.getWindow()!!.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            mQrDialog.show()
+
+        }
+        mainBinding.layoutPaytomember.setOnClickListener {
+          /*  var mQrDialog : QrScanner
+            mQrDialog=
+                QrScanner(activity)
+            mQrDialog.getWindow()!!.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            mQrDialog.show()*/
+            val requiredPermission = Manifest.permission.CAMERA
+            val checkVal: Int = thiscontext.checkCallingOrSelfPermission(requiredPermission)
+
+            if (checkVal== PackageManager.PERMISSION_GRANTED){
+                startActivity(Intent(thiscontext,Scanner_Activity::class.java))
+                Log.e(">>","if")
+            } else {
+                Log.e(">>","else")
+                Toast.makeText(thiscontext,"Please Allow Camera Permission.",Toast.LENGTH_SHORT).show()
+
+                if (ActivityCompat.checkSelfPermission(thiscontext,
+                        Manifest.permission.CAMERA
+                    ) !== PackageManager.PERMISSION_GRANTED
+                ) {
+
+                    requestPermissions(arrayOf(Manifest.permission.CAMERA), 101)
+                } else {
+                    Log.e("DB", "PERMISSION GRANTED")
+                }
+
+            }
+        }
     }
 
-    fun setFram1(fram: Fragment)
-    {
-        val newFragment = fram
-        requireFragmentManager().beginTransaction()
-            .replace(R.id.frame, newFragment)
-            .addToBackStack(null)
-            .commitAllowingStateLoss()
-    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 101) {
+            if (grantResults.size > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(thiscontext,
+                    "Camera Permission Granted",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            }
+            else {
 
+                Toast.makeText(thiscontext, "Please Allow Camera Permission.", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+    
     fun dialog()
     {
         val dialog = AndroidDialog(thiscontext)
@@ -117,24 +190,17 @@ class Home_Fragment: Fragment() {
 
     }
 
-    fun try_later(titile:String)
-    {
-        val dialog = AndroidDialog(thiscontext, AlertDialog.THEME_DEVICE_DEFAULT_DARK)
-        dialog.setColor(Color.parseColor("#041e37"))
-        dialog.setTitle(titile)
-        dialog.setColor(R.color.colorPrimaryDark)
-        dialog.setContentTextColor(R.color.colorPrimaryDark)
-        dialog.setPositiveListener(
-            "Ok"
-        ) { dialog ->
-            Toast.makeText(
-                thiscontext,
-                dialog.positiveText.toString(),
-                Toast.LENGTH_SHORT
-            ).show()
-            dialog.dismiss()
-        }.show()
+    fun showDialog_commingSoon(){
+        SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+            .setTitleText("Coming soon")
+            .setContentText("work on progress")
+            .setConfirmText("OK")
+            .setConfirmClickListener { sDialog ->
+                sDialog.dismiss()
+            }
+            .show()
     }
+
     private fun createBottomUpAnimation(
         view: View,
         listener: AnimatorListenerAdapter?, distance: Float
@@ -159,10 +225,57 @@ class Home_Fragment: Fragment() {
         }
         return animator
     }
-/*
-    fun slid() {
-        createTopDownAnimation(mainBinding.topLayout, null,100).start())
-        createBottomUpAnimation(mainBinding.topLayout, null, mainBinding.topLayout.getHeight()).start();
+    fun cln() {
+        Log.d(TAG, "setview1 "+pref.ReadStringPreferences(Constances.PREF_amt))
+        Log.d(TAG, "setview2 "+pref.ReadStringPreferences(Constances.PREF_operator_code))
+        Log.d(TAG, "setview3 "+pref.ReadIntPreferences("opt"))
+        pref.writeStringPreference(Constances.PREF_amt,"")
+        pref.writeStringPreference(Constances.PREF_operator_code,"")
+        pref.writeStringPreference(Constances.PREF_temp_number,"")
+        pref.writeIntPreference("opt",0)
     }
-*/
+
+    fun getBalance()     {
+        var apiInterface: ApiInterface = context?.let { RetrofitManager(it).instance }!!.create(ApiInterface::class.java)
+
+        apiInterface.getUserBalance(pref.ReadStringPreferences(Constances.PREF_Msrno),"").
+        enqueue(object : Callback<JsonObject>
+        {
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                Toast.makeText(context," "+t.message.toString(),Toast.LENGTH_LONG).show()
+            }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if(response.isSuccessful) {
+
+                    Log.d(TAG, "onResponse: "+response.toString())
+                    Log.d(TAG, "onResponse: "+response.body().toString())
+
+                    val jsonObject= JSONObject(response.body().toString())
+
+                    if(jsonObject.getString("Error").toLowerCase().equals("false")){
+//                        Toast.makeText(context," "+jsonObject.getString("Message"),Toast.LENGTH_LONG).show()
+                        if(jsonObject.has("Data") && !jsonObject.isNull("Data") ) {
+                            val json_Array: JSONArray = jsonObject.getJSONArray("Data")
+
+                            val jsonobject1: JSONObject = json_Array.getJSONObject(0)
+                            pref.writeStringPreference(Constances.PREF_Balance,jsonobject1.getString("Balance"))
+                            mainBinding.txtBalance.text = "₹ "+jsonobject1.getString("Balance")
+                        }else{
+                            Toast.makeText(context,"Bad Response when get balance.",Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    else{
+                        Toast.makeText(context,"Bad Response when get balance.",Toast.LENGTH_LONG).show()
+                    }
+                }else{
+
+                    Toast.makeText(context,"Bad Response when get balance.",Toast.LENGTH_LONG).show()
+                }
+
+            }
+
+        })
+    }
+
 }

@@ -10,6 +10,8 @@ import android.content.pm.Signature;
 import android.util.Base64;
 import android.util.Log;
 
+import androidx.multidex.MultiDex;
+
 import com.example.myrecharge.Activitys.Login_Activity;
 
 import java.security.MessageDigest;
@@ -21,20 +23,32 @@ public class Local_data extends Application  {
     public  String MY_APP_SHARED_PREFERENCES = "finance";
     public  SharedPreferences mPreferences;
     private  Local_data mInstance;
+//      MultiDex.install(this);
 
     public Local_data(Context MY_APP_CONTEXT){
         this.MY_APP_CONTEXT = MY_APP_CONTEXT;
     }
+
     public  Context getMyappContext() {
         return MY_APP_CONTEXT;
     }
 
-    public void setMyappContext(Context mContext) {
-        MY_APP_CONTEXT = mContext;
+    public void setMyappContext(Context MY_APP_CONTEXT) {
+        this.MY_APP_CONTEXT = MY_APP_CONTEXT;
     }
 
     public  SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences(MY_APP_SHARED_PREFERENCES, 0);
+    }
+
+    private String someVariable;
+
+    public String getSomeVariable() {
+        return someVariable;
+    }
+
+    public void setSomeVariable(String someVariable) {
+        this.someVariable = someVariable;
     }
 
     public  void writeIntPreference(String key, int value) {
@@ -79,7 +93,6 @@ public class Local_data extends Application  {
         writeIntPreference(Constances.PREF_IsLogin, 0);
         clearPrefrences();
     }
-
      void clearPrefrences(){
         mPreferences = getSharedPreferences(MY_APP_CONTEXT);
         SharedPreferences.Editor mEditor = mPreferences.edit();
@@ -91,6 +104,7 @@ public class Local_data extends Application  {
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         getMyappContext().startActivity(intent);
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
