@@ -35,6 +35,22 @@
                 app:layout_constraintStart_toStartOf="@+id/item_layout"
                 app:layout_constraintTop_toTopOf="@+id/item_layout" />
 
+            <TextView
+                android:id="@+id/txt_Amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:text="$50000"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_title"
+                app:layout_constraintBottom_toBottomOf="@+id/item_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@id/item_layout"
@@ -46,17 +62,24 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:minHeight="80dp">
+                android:minHeight="80dp"
+                android:layout_marginRight="70dp">
 
-                <ImageView
-                    android:id="@+id/img_operator"
+                <TextView
+                    android:id="@+id/txt_type"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginStart="9dp"
-                    android:src="@drawable/moneytransfer"
+                    android:text="Cr"
+                    android:textColor="@color/c_white"
+                    android:textSize="@dimen/text_title"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:foregroundGravity="center"
                     android:layout_marginRight="4dp"
-                    android:layout_marginLeft="4dp" />
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/blue_button_background"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -97,7 +120,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/txt_recharge"
+                            android:id="@+id/txt_description"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Recharge of 0000"
@@ -105,31 +128,8 @@
                             android:textColor="@color/c_gray1"
                             android:textSize="@dimen/text_small"
                             android:layout_gravity="left"
-                            android:fontFamily="@font/worksans_medium"/>
-                        <TextView
-                            android:id="@+id/txt_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Success"
-                            android:layout_marginTop="2dp"
-                            android:textColor="@color/c_green"
-                            android:textSize="@dimen/text_small"
-                            android:layout_gravity="left"
-                            android:layout_marginLeft="4dp"
-                            android:textStyle="bold"
                             android:fontFamily="@font/worksans_medium"/>
 
-                        <TextView
-                            android:id="@+id/txt_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Recharge of 0000"
-                            android:layout_marginTop="2dp"
-                            android:textColor="@color/c_gray1"
-                            android:textSize="@dimen/text_small"
-                            android:layout_gravity="left"
-                            android:layout_marginLeft="4dp"
-                            android:fontFamily="@font/worksans_medium"/>
 
 
                     </LinearLayout>

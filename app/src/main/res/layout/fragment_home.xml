@@ -9,7 +9,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/c_white">
+        android:background="@color/c_white"
+        android:layout_marginBottom="75dp">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
@@ -365,8 +366,8 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
-
                                 <LinearLayout
+                                    android:id="@+id/layout_bank_transfer"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -384,7 +385,7 @@
                                         android:paddingTop="15dp"
                                         android:paddingRight="4dp"
                                         android:paddingBottom="15dp"
-                                        android:text="Bank Balance"
+                                        android:text="Bank Transfer"
                                         android:textColor="@color/c_white"
                                         android:textSize="@dimen/text"
                                         android:textStyle="bold"
@@ -729,7 +730,7 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:id="@+id/btn_datacard"
+                                android:id="@+id/btn_hotel"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -748,7 +749,7 @@
                                     android:backgroundTint="@color/blue_btn_bg_color"
                                     android:foregroundGravity="center"
                                     android:padding="9dp"
-                                    android:src="@drawable/pancard"/>
+                                    android:src="@drawable/hotel"/>
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -757,7 +758,7 @@
                                     android:fontFamily="@font/worksans_medium"
                                     android:foregroundGravity="center"
                                     android:gravity="center"
-                                    android:text="Data Card"
+                                    android:text="Hotel"
                                     android:textColor="@color/c_gray2"
                                     android:textSize="@dimen/text" />
                             </LinearLayout>
@@ -769,7 +770,8 @@
                             android:layout_height="match_parent"
                             android:layout_marginTop="15dp"
                             android:orientation="horizontal"
-                            android:weightSum="4">
+                            android:weightSum="4"
+                            android:visibility="gone">
 
                             <LinearLayout
                                 android:id="@+id/btn_ladline"
@@ -874,7 +876,7 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:id="@+id/btn_hotel"
+                                android:id="@+id/btn_datacard"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -893,7 +895,7 @@
                                     android:backgroundTint="@color/blue_btn_bg_color"
                                     android:foregroundGravity="center"
                                     android:padding="9dp"
-                                    android:src="@drawable/hotel"/>
+                                    android:src="@drawable/pancard"/>
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -902,10 +904,11 @@
                                     android:fontFamily="@font/worksans_medium"
                                     android:foregroundGravity="center"
                                     android:gravity="center"
-                                    android:text="Hotel"
+                                    android:text="Data Card"
                                     android:textColor="@color/c_gray2"
                                     android:textSize="@dimen/text" />
                             </LinearLayout>
+
 
                         </LinearLayout>
 

@@ -3,28 +3,25 @@ package com.example.myrecharge.Activitys.Manus
 import android.content.BroadcastReceiver
 import android.content.IntentFilter
 import android.net.ConnectivityManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.GridLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.example.myrecharge.Adapter.BankListAdapter
+import com.example.myrecharge.Adapter.AddBankAdapter
 import com.example.myrecharge.Helper.ApiInterface
 import com.example.myrecharge.Helper.Local_data
 import com.example.myrecharge.Helper.RetrofitManager
 import com.example.myrecharge.Models.BankListModel
 import com.example.myrecharge.R
 import com.example.myrecharge.databinding.ActivityAddBankAccountBinding
-import com.example.myrecharge.databinding.ActivityMoneyTrasferBinding
 import com.google.gson.JsonObject
 import org.json.JSONObject
 import retrofit2.Call
@@ -38,7 +35,7 @@ class AddBankAccount : AppCompatActivity() {
     var linearLayoutManager: GridLayoutManager? = null
     var rechargeReportHistory:ArrayList<BankListModel> = java.util.ArrayList()
     var array_sort = java.util.ArrayList<BankListModel>()
-    var adapter: BankListAdapter? = null
+    var adapter: AddBankAdapter? = null
     var pausingDialog: SweetAlertDialog?=null
     var textlength = 0
 
@@ -51,7 +48,7 @@ class AddBankAccount : AppCompatActivity() {
         linearLayoutManager = GridLayoutManager(this@AddBankAccount,2)
         mainBinding.mainRecycler!!.layoutManager = linearLayoutManager
         mainBinding.mainRecycler!!.itemAnimator = DefaultItemAnimator()
-        adapter = BankListAdapter(rechargeReportHistory,this@AddBankAccount)
+        adapter = AddBankAdapter(rechargeReportHistory,this@AddBankAccount)
         mainBinding.mainRecycler.adapter=adapter
         var MyReceiver: BroadcastReceiver?= null;
         MyReceiver = com.example.myrecharge.Helper.MyReceiver()
@@ -64,15 +61,18 @@ class AddBankAccount : AppCompatActivity() {
         list_filter()
 
         mainBinding.mainSwiperefresh.setOnRefreshListener {
-
             getBankList()
+        }
+        mainBinding.toolbarLayout.back.setOnClickListener {
+            super.onBackPressed()
         }
 
     }
+
     fun getBankList()
     {
         mainBinding.imgEmptylist.visibility = View.GONE
-        mainBinding.mainProgress.visibility = View.VISIBLE
+        
         var apiInterface: ApiInterface = RetrofitManager(this@AddBankAccount).instance!!.create(
             ApiInterface::class.java)
 
@@ -83,7 +83,6 @@ class AddBankAccount : AppCompatActivity() {
                 Toast.makeText(this@AddBankAccount,t.message.toString()+" ", Toast.LENGTH_LONG).show()
                 pausingDialog?.dismiss()
                 mainBinding.imgEmptylist.visibility = View.VISIBLE
-                mainBinding.mainProgress.visibility = View.GONE
                 if(mainBinding.mainSwiperefresh.isRefreshing == true) {
                     mainBinding.mainSwiperefresh.setRefreshing(false) } else { }
             }
@@ -94,8 +93,7 @@ class AddBankAccount : AppCompatActivity() {
                 if(mainBinding.mainSwiperefresh.isRefreshing == true) {
                     mainBinding.mainSwiperefresh.setRefreshing(false) } else { }
 
-                mainBinding.imgEmptylist.visibility = View.VISIBLE
-                mainBinding.mainProgress.visibility = View.GONE
+                mainBinding.imgEmptylist.visibility = View.GONE
 
                 if(response.isSuccessful) {
                     Log.d(TAG, "onResponse: "+response.toString())
@@ -120,6 +118,8 @@ class AddBankAccount : AppCompatActivity() {
                                     JsonObjectData.getString("BankerMasterID").toInt()
                                 mRechargereportModel.bankerMasterName =
                                     JsonObjectData.getString("BankerMasterName")
+                                    mRechargereportModel.bankImage =
+                                    JsonObjectData.getString("BankImage")
 
                                 rechargeReportHistory.add(mRechargereportModel)
                                 Log.d("!!" + TAG, "data " + i.toString() + " " + mRechargereportModel.bankerMasterName)
@@ -129,17 +129,17 @@ class AddBankAccount : AppCompatActivity() {
 
                         } else {
                             mainBinding.imgEmptylist.visibility = View.VISIBLE
-                            mainBinding.mainProgress.visibility = View.GONE
+                            
 
                         }
                     } else {
                         mainBinding.imgEmptylist.visibility = View.VISIBLE
-                        mainBinding.mainProgress.visibility = View.GONE
+                        
 
                     }
                 } else {
                     mainBinding.imgEmptylist.visibility = View.VISIBLE
-                    mainBinding.mainProgress.visibility = View.GONE
+                    
 
                 }
             }
@@ -162,27 +162,25 @@ class AddBankAccount : AppCompatActivity() {
                 before: Int,
                 count: Int
             ) {
-                mainBinding.edtSearche.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-                textlength = mainBinding.edtSearche.getText().length
-                array_sort.clear()
-                for (i in rechargeReportHistory.indices) {
-                    if (textlength <= rechargeReportHistory.get(i).bankerMasterName.length) {
-                        if (rechargeReportHistory.get(i).bankerMasterName.toLowerCase().contains(
-                                mainBinding.edtSearche.getText().toString().toLowerCase()
-                                    .trim({ it <= ' ' })
-                            )
-                        ) {
-                            array_sort.add(rechargeReportHistory.get(i))
-                        }
-                    }
-                }
-                mainBinding.mainRecycler.setAdapter(
-                    BankListAdapter(
-                        array_sort,this@AddBankAccount
-                    )
-                )
+                filter(mainBinding.edtSearche.text.toString())
             }
         })
+    }
+    private fun filter(text: String) {
+        //new array list that will hold the filtered data
+        val filterdNames: ArrayList<BankListModel> = ArrayList()
+
+        //looping through existing elements
+        for (s in rechargeReportHistory) {
+            //if the existing elements contains the search input
+            if (s.bankerMasterName.toLowerCase().contains(text.toLowerCase())) {
+                //adding the element to filtered list
+                filterdNames.add(s)
+            }
+        }
+
+        //calling a method of the adapter class and passing the filtered list
+        adapter?.filterList(filterdNames)
     }
 
 }

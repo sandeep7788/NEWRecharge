@@ -39,10 +39,11 @@ class WalletFragment : Fragment() {
     var history_list:ArrayList<HistoryModel> = java.util.ArrayList()
     var Last_History_ID=0
     var linearLayoutManager: LinearLayoutManager? = null
+    var isLoading=false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?
     ): View? {
-
         mainBinding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_wallet, container, false)
         mContext=container!!.context
@@ -59,7 +60,7 @@ class WalletFragment : Fragment() {
 
         getHistory()
         monClick()
-
+        initView()
         mainBinding.mainSwiperefresh.setOnRefreshListener {
             adapter?.clear()
             history_list.clear()
@@ -67,14 +68,38 @@ class WalletFragment : Fragment() {
             getHistory()
         }
 
-        initView()
+        mainBinding.mainRecycler.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(
+                recyclerView: RecyclerView,
+                newState: Int
+            ) {
+                super.onScrollStateChanged(recyclerView, newState)
+//                                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE)
+                if (recyclerView.canScrollVertically(1).not()
+                    && newState == RecyclerView.SCROLL_STATE_IDLE
+                ) {
+                    Log.d(">>-----", "end")
+                    if(!isLoading){
+                        isLoading=true
+                        getHistory()
 
+
+                        mainBinding.mainProgress.visibility = View.GONE
+                        Log.d(">>-----", "end1")
+
+                    }
+
+                }
+            }
+        })
 
 
 
 
         return mainBinding.root
     }
+
     fun initView()
     {
         var pref= Local_data(mContext)
@@ -99,19 +124,20 @@ class WalletFragment : Fragment() {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 Toast.makeText(mContext,t.message.toString()+" ", Toast.LENGTH_LONG).show()
                 pausingDialog?.dismiss()
+                mainBinding.imgEmptylist.visibility=View.VISIBLE
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-
+                mainBinding.imgEmptylist.visibility=View.GONE
                 stop_progress()
-
+                adapter?.addLoadingFooter()
                 if(response.isSuccessful) {
                     Log.d(TAG, "onResponse: "+response.toString())
                     Log.d(TAG, "onResponse: "+response.body().toString())
                     var mJsonObject = JSONObject(response.body().toString())
                     var operatorDialog : CustomDialog
-                    Toast.makeText(mContext,mJsonObject.getString("Message")+" ",
-                        Toast.LENGTH_LONG).show()
+                   /* Toast.makeText(mContext,mJsonObject.getString("Message")+" ",
+                        Toast.LENGTH_LONG).show()*/
 
                     if(mJsonObject.has("Data") && !mJsonObject.isNull("Data") ) {
 
@@ -139,45 +165,26 @@ class WalletFragment : Fragment() {
                             }
                             stop_progress()
                             adapter?.notifyDataSetChanged()
+                            isLoading=false
+                            if (history_list.size < 9) {
+                                adapter?.removeLoadingFooter()
+                            }
 
-                            mainBinding.mainRecycler.addOnScrollListener(object :
-                                RecyclerView.OnScrollListener() {
-                                override fun onScrollStateChanged(
-                                    recyclerView: RecyclerView,
-                                    newState: Int
-                                ) {
-                                    super.onScrollStateChanged(recyclerView, newState)
-//                                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE)
-                                    if (recyclerView.canScrollVertically(1).not()
-                                        && newState == RecyclerView.SCROLL_STATE_IDLE
-                                    ) {
-
-                                        Log.d(">>-----", "end")
-
-
-
-                                        once.run(Runnable {
-                                            getHistory()
-                                            Log.d(">>-----", "end0")
-                                        })
-
-                                    }
-                                }
-                            })
                         }
                     }
                     else {
                         stop_progress()
+                        mainBinding.imgEmptylist.visibility= View.VISIBLE
                     }
                 }
                 else {
                     stop_progress()
+                    mainBinding.imgEmptylist.visibility= View.VISIBLE
                 }
             }
         })
     }
     fun stop_progress() {
-        mainBinding.imgEmptylist.visibility= View.VISIBLE
         mainBinding.mainProgress.visibility= View.GONE
         if(mainBinding.mainSwiperefresh.isRefreshing == true) {
             mainBinding.mainSwiperefresh.setRefreshing(false) } else { }

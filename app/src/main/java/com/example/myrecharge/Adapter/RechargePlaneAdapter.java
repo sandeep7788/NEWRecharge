@@ -8,12 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.example.myrecharge.Activitys.Manus.Prepaid_Activity;
+import com.example.myrecharge.Activitys.Manus.TopServicesActivity;
 import com.example.myrecharge.Helper.Constances;
 import com.example.myrecharge.Helper.Local_data;
 import com.example.myrecharge.Models.CategoryDetail;
@@ -71,7 +69,6 @@ public class RechargePlaneAdapter extends BaseAdapter{
 
     }
 
-
     @Override
 
     public View getView(final int position, View convertView, ViewGroup arg2) {
@@ -110,7 +107,7 @@ public class RechargePlaneAdapter extends BaseAdapter{
         holder.layout_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ctx,Prepaid_Activity.class);
+                Intent intent = new Intent(ctx, TopServicesActivity.class);
                 intent.putExtra("amt",holder.txt_amount.getText().toString());
                 Local_data pref = new Local_data(ctx);
                 pref.writeStringPreference(Constances.PREF_amt,holder.txt_amount.getText().toString());

@@ -22,7 +22,7 @@ public class Local_data extends Application  {
     public  Context MY_APP_CONTEXT = null;
     public  String MY_APP_SHARED_PREFERENCES = "finance";
     public  SharedPreferences mPreferences;
-    private  Local_data mInstance;
+    public  Local_data mInstance;
 //      MultiDex.install(this);
 
     public Local_data(Context MY_APP_CONTEXT){

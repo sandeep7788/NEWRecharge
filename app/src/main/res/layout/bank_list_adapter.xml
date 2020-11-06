@@ -20,9 +20,22 @@
             android:layout_marginRight="4dp"
             android:layout_marginLeft="4dp">
 
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="4dp"
+                android:progressTint="@color/c_blue_dark"
+                app:layout_constraintBottom_toBottomOf="@+id/item_layout"
+                app:layout_constraintEnd_toStartOf="@+id/img_menu"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/item_layout"
+                android:visibility="gone"/>
+
             <View
                 android:id="@+id/view"
-                android:layout_width="2dp"
+                android:layout_width="1dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="8dp"
@@ -35,38 +48,22 @@
                 app:layout_constraintStart_toStartOf="@+id/item_layout"
                 app:layout_constraintTop_toTopOf="@+id/item_layout" />
 
-
             <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:padding="4dp"
-                android:src="@drawable/whitepmrlogo"
-                app:layout_constraintBottom_toBottomOf="@+id/item_layout"
-                app:layout_constraintEnd_toStartOf="@+id/amount1"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/item_layout"
-                app:layout_constraintTop_toTopOf="@+id/item_layout"
-                app:tint="@color/colorPrimary" />
-
-
-            <TextView
-                android:id="@+id/amount1"
+                android:id="@+id/img_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/item_layout"
                 android:layout_alignBottom="@+id/item_layout"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:background="#ffffff"
+                android:background="@drawable/ic_baseline_drag_indicator_24"
+                android:tint="@color/c_blue_dark"
+                android:backgroundTint="@color/c_blue_dark"
                 android:foregroundGravity="center"
                 android:gravity="end|center_vertical"
                 android:padding="16dp"
-                android:text="0"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/item_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/item_layout"
@@ -86,68 +83,58 @@
                 android:minHeight="80dp">
 
                 <ImageView
-                    android:id="@+id/i_image"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:id="@+id/img_bank"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginStart="9dp"
-                    android:src="@drawable/prepaid"
+                    android:src="@drawable/openedwhitebox"
                     android:layout_marginRight="4dp"
-                    android:layout_marginLeft="9dp" />
+                    android:layout_marginLeft="9dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:minHeight="200dp">
+                    android:minHeight="200dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="45dp">
 
 
-                    <TextView
-                        android:id="@+id/t_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123456789"
-                        android:textColor="#000000"
-                        android:textSize="14dp"
-                        android:textAppearance="?android:textAppearanceLarge"/>
 
 
                     <LinearLayout
+                        android:id="@+id/layout_item"
+                        android:layout_gravity="center|left"
+                        android:gravity="center|left"
+                        android:foregroundGravity="center|left"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_weight="1"
-                        android:layout_marginTop="4dp">
+                        android:orientation="vertical"
+                        android:layout_weight="1">
 
                         <TextView
+                            android:id="@+id/txt_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SBI"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/text_title"
+                            android:textAppearance="?android:textAppearanceLarge"
+                            android:fontFamily="@font/worksans_medium"/>
+
+                        <TextView
+                            android:id="@+id/txt_code"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
                             android:gravity="bottom"
-                            android:text="Date: "
-                            android:textColor="#000" />
-
-                        <TextView
-                            android:id="@+id/t_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:gravity="bottom"
-                            android:text="Re No. 123456789"
-                            android:textColor="@color/red_btn_bg_pressed_color" />
+                            android:text="xxxxxxxxx"
+                            android:textColor="@color/c_gray1"
+                            android:fontFamily="@font/worksans_medium"/>
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginTop="4dp"
-                        android:layout_gravity="left"
-                        android:gravity="left"
-                        android:foregroundGravity="left">
-
-                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>

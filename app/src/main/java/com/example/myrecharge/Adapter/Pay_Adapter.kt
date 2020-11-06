@@ -1,11 +1,11 @@
 package com.example.myrecharge.Adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -102,6 +102,11 @@ public class Pay_Adapter(
         add(PayReportDeatilsModel())
     }
 
+    fun addLoadingFooter1() {
+        isLoadingAdded = false
+        add(PayReportDeatilsModel())
+    }
+
     fun removeLoadingFooter() {
         isLoadingAdded = false
         val position = movies!!.size - 1
@@ -119,18 +124,16 @@ public class Pay_Adapter(
     protected inner class ItemList(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         val txt_id: TextView
-        val img_operator: ImageView
-        val txt_recharge: TextView
-        val txt_status: TextView
-        val txt_date: TextView
+        val txt_description: TextView
+        val txt_Amount: TextView
+        val txt_type: TextView
 
         init {
             txt_id = itemView.findViewById<View>(R.id.txt_id) as TextView
-            img_operator =
-                itemView.findViewById<View>(R.id.img_operator) as ImageView
-            txt_recharge = itemView.findViewById<View>(R.id.txt_recharge) as TextView
-            txt_status = itemView.findViewById<View>(R.id.txt_status) as TextView
-            txt_date = itemView.findViewById<View>(R.id.txt_date) as TextView
+            txt_description =
+                itemView.findViewById<View>(R.id.txt_description) as TextView
+            txt_Amount = itemView.findViewById<View>(R.id.txt_Amount) as TextView
+            txt_type = itemView.findViewById<View>(R.id.txt_type) as TextView
         }
     }
 
@@ -157,15 +160,19 @@ public class Pay_Adapter(
                     holder as ItemList?
                 try {
                     if (movie.eWalletTransactionID == null) {
-//                    mItemList.txt_id.setText("_");
                     } else {
 
-                        mItemList!!.txt_id.text = "E-TransactionID : "+movie.eWalletTransactionID.toString()
-                        mItemList.txt_date.text = "on " + movie.adddate.toString()
-                        mItemList.txt_recharge.text =
-                            "Recharge of " + movie.amount.toString()
-                        mItemList.txt_status.text = "Transtime : " + movie.transtime
+                        mItemList!!.txt_id.text = "Transaction ID : "+movie.eWalletTransactionID.toString()
+                        mItemList!!.txt_description.text = movie.narration.toString()+" "+movie.adddate+" "+movie.transtime.toString()
+                        mItemList!!.txt_Amount.text = "₹ "+movie.amount.toString()+" "
 
+                        if(movie.amount.toInt()>0) {
+                            mItemList.txt_type.setText("Cr")
+                            mItemList!!.txt_Amount.setTextColor(Color.parseColor("#0b892e"))
+                        } else {
+                            mItemList.txt_type.setText("Dr")
+                            mItemList!!.txt_Amount.setTextColor(Color.parseColor("#ed1b24"))
+                        }
                     }
                 } catch (e: Exception) {
                     Toast.makeText(context, " " + e.message, Toast.LENGTH_SHORT).show()

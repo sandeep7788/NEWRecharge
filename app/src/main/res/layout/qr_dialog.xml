@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/img_close"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -36,8 +36,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginStart="4dp"
-            android:minHeight="260dp"
-            android:minWidth="250dp"
+            android:minHeight="300dp"
+            android:minWidth="300dp"
             android:layout_marginTop="45dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="45dp"

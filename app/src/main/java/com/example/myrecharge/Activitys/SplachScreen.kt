@@ -52,12 +52,44 @@ class SplachScreen : AppCompatActivity() {
         pausingDialog!!.setCancelable(false)
         mDialog =SweetAlertDialog(this@SplachScreen, SweetAlertDialog.ERROR_TYPE)
         mDialog!!.titleText = "Something Wrong go to login panel."
-        mDialog!!.contentText = "Something Wrong go to login panel."
+        mDialog!!.cancelText = "Re-start"
+        mDialog!!.confirmText = "Login panel"
         mDialog!!.setCancelable(false)
+        mDialog!!.setCancelClickListener{
+            mDialog!!.dismiss()
+            startActivity(Intent(this@SplachScreen,SplachScreen::class.java))
+            finish()
+        }
+        mDialog!!.setConfirmClickListener{
+            mDialog!!.dismiss()
+            go_to_login()
+            finish()
+        }
+        pausingDialog!!.setConfirmClickListener{
+
+            try {
+                var MyReceiver: BroadcastReceiver?= null;
+                MyReceiver = com.example.myrecharge.Helper.MyReceiver();
+                registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+                if(pausingDialog!!.isShowing) {
+                    pausingDialog!!.dismiss()
+                }
+                val intent = Intent()
+                intent.component = ComponentName(
+                    "com.android.settings",
+                    "com.android.settings.Settings\$DataUsageSummaryActivity"
+                )
+                startActivity(intent)
+            }catch (e:Exception) {
+                Log.e(TAG, "onCreate: "+e.message.toString())
+                go_to_login()
+            }
+        }
+
         MyReceiver1 = Network_reciver()
         registerReceiver(MyReceiver1, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-
     }
+
     fun getUrl() {
         var url_Interface: ApiInterface = RetrofitManager(this@SplachScreen).getUrl_instance!!.create(ApiInterface::class.java)
         url_Interface.getUrl("Paymyrecharge").enqueue(object : Callback<JsonArray>{
@@ -79,7 +111,7 @@ class SplachScreen : AppCompatActivity() {
                     if ((mLocal_data.ReadStringPreferences(Constances.PREF_Mobile).length)>4){
                         login() }
                     else{
-                        startActivity(Intent(this@SplachScreen,Login_Activity::class.java))
+                        go_to_login()
                     }
                 }else{
                     showDialog()
@@ -124,33 +156,41 @@ class SplachScreen : AppCompatActivity() {
                             mLocal_data.writeStringPreference(Constances.PREF_MemberName,jsonobject1.getString("MemberName"))
                             mLocal_data.writeStringPreference(Constances.PREF_Mobile,jsonobject1.getString("Mobile"))
                             mLocal_data.writeStringPreference(Constances.PREF_TransPass,jsonobject1.getString("TransPass"))
+
+                            mLocal_data.writeStringPreference(Constances.PREF_email,jsonobject1.getString("Email"))
+                            mLocal_data.writeStringPreference(Constances.PREF_Address,jsonobject1.getString("Address"))
+                            mLocal_data.writeStringPreference(Constances.PREF_Landmark,jsonobject1.getString("landmark"))
+                            mLocal_data.writeStringPreference(Constances.PREF_CountryCode,jsonobject1.getString("CountryID"))
+                            mLocal_data.writeStringPreference(Constances.PREF_StateId,jsonobject1.getString("stateID"))
+                            mLocal_data.writeStringPreference(Constances.PREF_Zip,jsonobject1.getString("ZIP"))
+                            mLocal_data.writeStringPreference(Constances.PREF_GST_no,jsonobject1.getString("GSTno"))
+                            mLocal_data.writeStringPreference(Constances.PREF_F_name,jsonobject1.getString("FirstName"))
+                            mLocal_data.writeStringPreference(Constances.PREF_L_name,jsonobject1.getString("LastName"))
                             pDialog!!.visibility=View.GONE
                             Log.d(TAG, "onResponse: 1"+jsonobject1.getString("Msrno"))
                             Log.d(TAG, "onResponse: 2"+jsonobject1.getString("Membertype"))
+                            Log.e("##",jsonobject1.getString("LastName"))
+                            if(mDialog?.isShowing!!) { mDialog?.dismiss()}
+                            if(pausingDialog?.isShowing!!) { pausingDialog?.dismiss()}
                             startActivity(Intent(this@SplachScreen,DashboardActivity::class.java))
                             unregisterReceiver(MyReceiver1)
                             finish()
                         }
                     }
                     else{
-
-                        var i:Intent
-                        i=Intent(this@SplachScreen,Login_Activity::class.java)
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        startActivity(i)
-                        Toast.makeText(this@SplachScreen,"Bad Response ! ",Toast.LENGTH_LONG).show()
                         showDialog()
+                        startActivity(Intent(this@SplachScreen,Login_Activity::class.java))
+
                     }
                 }else{
                     pDialog!!.visibility=View.GONE
                     Toast.makeText(this@SplachScreen,"Bad Response ! ",Toast.LENGTH_LONG).show()
                     showDialog()
                 }
-
             }
-
         })
     }
+
     inner open class Network_reciver() : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
@@ -184,16 +224,6 @@ class SplachScreen : AppCompatActivity() {
                     )
                     startActivity(intent)
                 }
-                pausingDialog!!.setCancelClickListener {
-                    pausingDialog!!.dismiss()
-
-                    val intent = Intent()
-                    intent.component = ComponentName(
-                        "com.android.settings",
-                        "com.android.settings.Settings\$DataUsageSummaryActivity"
-                    )
-                    startActivity(intent)
-                }
             }
 
             if (!connected) {
@@ -210,29 +240,37 @@ class SplachScreen : AppCompatActivity() {
             }
         }
     }
+
     fun showDialog(){
 
         if (mDialog == null) {
 
             mDialog!!.setConfirmClickListener{
                 mDialog!!.dismiss()
-                startActivity(Intent(this@SplachScreen,Login_Activity::class.java))
+                go_to_login()
             }
             mDialog!!.setCancelClickListener{
                 mDialog!!.dismiss()
-                startActivity(Intent(this@SplachScreen,Login_Activity::class.java))
+                go_to_login()
             }
 
         }
-        if (!mDialog?.isShowing!!){
-            mDialog?.show()
+        try {
+        if(!isFinishing())
+        {
+            if (!mDialog?.isShowing!!){
+                mDialog?.show()
+            }
+        } } catch (e:java.lang.Exception) {
+            Log.e("@@error",e.message.toString())
         }
+
     }
 
     override fun onDestroy() {
         try {
-            if (pausingDialog != null) pausingDialog?.dismiss()
-            if (mDialog != null) mDialog?.dismiss()
+            if (pausingDialog != null)
+            if (mDialog != null){ mDialog?.dismiss() }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -248,4 +286,12 @@ class SplachScreen : AppCompatActivity() {
         }
         super.onPause()
     }*/
+    fun go_to_login() {
+
+    var i:Intent
+    i=Intent(this@SplachScreen,Login_Activity::class.java)
+    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+    startActivity(i)
+    unregisterReceiver(MyReceiver1)
+    }
 }

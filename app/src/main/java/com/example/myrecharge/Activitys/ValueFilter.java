@@ -10,20 +10,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.example.myrecharge.Custom_.CustomAlertAdapter;
+
+import com.example.myrecharge.Adapter.CustomAlertAdapter;
 import com.example.myrecharge.Models.OperatorModel;
 import com.example.myrecharge.R;
+
 import java.util.ArrayList;
 
 public class ValueFilter implements  OnItemClickListener {
 
-    public Button btn_listviewdialog=null;
-    //public String TitleName[]={"Sunil Gupta","Ram Chnadra"," Abhishek Tripathi","Amit Verma","Sandeep Pal","Awadhesh Diwakar","Shishir Verma","Ravi Vimal","Prabhakr Singh","Manish Srivastva","Jitendra Singh","Surendra Pal"};
     public ArrayList<OperatorModel> TitleName = new ArrayList<>();
     public ArrayList<OperatorModel> array_sort=new ArrayList<>();
     int textlength=0;
@@ -40,11 +39,6 @@ public class ValueFilter implements  OnItemClickListener {
 
     public void onClick() {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(context,R.layout.custom_dialog_layout);
-
-
-        Log.d("##TitleName", "onResponse: "+TitleName.get(2).getOperatorName());
-
-
 
         final EditText editText = new EditText(context);
         final ListView listview=new ListView(context);

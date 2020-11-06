@@ -29,4 +29,11 @@ public class Constances  {
     public static String PREF_operator_code = "PERF_Operoto_code";
     public static String PREF_amt = "PREF_amt";
     public static String PREF_temp_number = "PREF_temp_number";
+    public static String PREF_Landmark = "PREF_Landmark";
+    public static String PREF_CountryCode = "PREF_CountryCode";
+    public static String PREF_StateId = "PREF_StateId";
+    public static String PREF_Zip = "PREF_Zip";
+    public static String PREF_GST_no = "PREF_GST_no";
+    public static String PREF_F_name = "PREF_F_name";
+    public static String PREF_L_name = "PREF_L_name";
 }

@@ -34,6 +34,7 @@ class History_Activity : AppCompatActivity() {
     var history_list:ArrayList<HistoryModel> = java.util.ArrayList()
     var Last_History_ID=0
     var linearLayoutManager: LinearLayoutManager? = null
+    var isLoading=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,11 +54,36 @@ class History_Activity : AppCompatActivity() {
         monClick()
 
         mainBinding.mainSwiperefresh.setOnRefreshListener {
-            adapter?.clear()
+            adapter!!.clear()
             history_list.clear()
             Last_History_ID=0
             getHistory()
         }
+
+        mainBinding.mainRecycler.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(
+                recyclerView: RecyclerView,
+                newState: Int
+            ) {
+                super.onScrollStateChanged(recyclerView, newState)
+//                                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE)
+                if (recyclerView.canScrollVertically(1).not()
+                    && newState == RecyclerView.SCROLL_STATE_IDLE
+                ) {
+                    Log.d(">>-----", "end")
+                    if(!isLoading){
+                        isLoading=true
+                        getHistory()
+                        Log.d(">>-----", "end1")
+                        mainBinding.imgEmptylist.visibility = View.VISIBLE
+                        mainBinding.mainProgress.visibility = View.GONE
+                    }
+
+                }
+            }
+        })
+
     }
 
     fun monClick()
@@ -80,24 +106,23 @@ class History_Activity : AppCompatActivity() {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 Toast.makeText(this@History_Activity,t.message.toString()+" ", Toast.LENGTH_LONG).show()
                 pausingDialog?.dismiss()
+                mainBinding.imgEmptylist.visibility= View.VISIBLE
             }
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
 
                 stop_progress()
 
+                adapter?.addLoadingFooter()
                 if(response.isSuccessful) {
-                    Log.d(TAG, "onResponse: "+response.toString())
-                    Log.d(TAG, "onResponse: "+response.body().toString())
+
                     var mJsonObject = JSONObject(response.body().toString())
                     var operatorDialog : CustomDialog
-                    Toast.makeText(this@History_Activity,mJsonObject.getString("Message")+" ",
-                        Toast.LENGTH_LONG).show()
 
                     if(mJsonObject.has("Data") && !mJsonObject.isNull("Data") ) {
 
                         var mJsonArray = mJsonObject.getJSONArray("Data")
-
+                        mainBinding.imgEmptylist.visibility= View.GONE
                         if (mJsonObject.getString("Error").toLowerCase()
                                 .equals("false") && mJsonArray != null
                         ) {
@@ -120,31 +145,8 @@ class History_Activity : AppCompatActivity() {
                             }
                             stop_progress()
                             adapter?.notifyDataSetChanged()
+                            isLoading=false
 
-                            mainBinding.mainRecycler.addOnScrollListener(object :
-                                RecyclerView.OnScrollListener() {
-                                override fun onScrollStateChanged(
-                                    recyclerView: RecyclerView,
-                                    newState: Int
-                                ) {
-                                    super.onScrollStateChanged(recyclerView, newState)
-//                                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE)
-                                    if (recyclerView.canScrollVertically(1).not()
-                                        && newState == RecyclerView.SCROLL_STATE_IDLE
-                                    ) {
-
-                                        Log.d(">>-----", "end")
-
-
-
-                                        once.run(Runnable {
-                                            getHistory()
-                                            Log.d(">>-----", "end0")
-                                        })
-
-                                    }
-                                }
-                            })
                         }
                     }
                     else {
@@ -158,7 +160,7 @@ class History_Activity : AppCompatActivity() {
         })
     }
     fun stop_progress() {
-        mainBinding.imgEmptylist.visibility= View.VISIBLE
+
         mainBinding.mainProgress.visibility= View.GONE
         if(mainBinding.mainSwiperefresh.isRefreshing == true) {
             mainBinding.mainSwiperefresh.setRefreshing(false) } else { }

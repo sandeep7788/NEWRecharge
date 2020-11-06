@@ -1,20 +1,23 @@
 package com.example.myrecharge.Adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.myrecharge.Models.HistoryModel
 import com.example.myrecharge.R
 import java.util.*
 
-public class PassbookAdapter(context: Context, movies: MutableList<HistoryModel>?) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
+public class PassbookAdapter(
+    context: Context,
+    movies: MutableList<HistoryModel>?
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
     private var movies: MutableList<HistoryModel>?
     private val context: Context
     private var isLoadingAdded = false
@@ -35,9 +38,10 @@ public class PassbookAdapter(context: Context, movies: MutableList<HistoryModel>
         val inflater = LayoutInflater.from(parent.context)
         Log.d(TAG, "onCreateViewHolder: $viewType")
         when (viewType) {
-            ITEM -> viewHolder = getViewHolder(parent, inflater)
+            ITEM -> viewHolder =
+                getViewHolder(parent, inflater)
             LOADING -> {
-                val v2: View = inflater.inflate(R.layout.item_progress, parent, false)
+                val v2 = inflater.inflate(R.layout.item_progress, parent, false)
                 viewHolder = LoadingVH(v2)
             }
         }
@@ -49,12 +53,12 @@ public class PassbookAdapter(context: Context, movies: MutableList<HistoryModel>
         inflater: LayoutInflater
     ): RecyclerView.ViewHolder {
         val viewHolder: RecyclerView.ViewHolder
-        val v1: View = inflater.inflate(R.layout.passbook_adapter, parent, false)
+        val v1 = inflater.inflate(R.layout.pay_adapter, parent, false)
         viewHolder = ItemList(v1)
         return viewHolder
     }
 
-
+   
 
     override fun getItemCount(): Int {
         return if (movies == null) 0 else movies!!.size
@@ -114,16 +118,17 @@ public class PassbookAdapter(context: Context, movies: MutableList<HistoryModel>
 
     protected inner class ItemList(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        val txt_cr_dr: TextView
-        val txt_title: TextView
-        val txt_date: TextView
+        val txt_id: TextView
+        val txt_description: TextView
         val txt_Amount: TextView
+        val txt_type: TextView
 
         init {
-            txt_cr_dr = itemView.findViewById<View>(R.id.txt_cr_dr) as TextView
-            txt_title = itemView.findViewById<View>(R.id.txt_title) as TextView
-            txt_date = itemView.findViewById<View>(R.id.txt_date) as TextView
+            txt_id = itemView.findViewById<View>(R.id.txt_id) as TextView
+            txt_description =
+                itemView.findViewById<View>(R.id.txt_description) as TextView
             txt_Amount = itemView.findViewById<View>(R.id.txt_Amount) as TextView
+            txt_type = itemView.findViewById<View>(R.id.txt_type) as TextView
         }
     }
 
@@ -146,17 +151,23 @@ public class PassbookAdapter(context: Context, movies: MutableList<HistoryModel>
         val movie = movies!![position]
         when (getItemViewType(position)) {
             ITEM -> {
-                val mItemList = holder as ItemList?
+                val mItemList =
+                    holder as ItemList?
                 try {
                     if (movie.eWalletTransactionID == null) {
-//                    mItemList.txt_id.setText("_");
                     } else {
-                        mItemList?.txt_date?.text = "on " + movie.adddate.toString()
-                        mItemList?.txt_Amount?.text =
-                            "₹ " + movie.amount.toString()
-                        mItemList?.txt_cr_dr?.text = "" + movie.factor
-                        mItemList?.txt_title?.text = movie.narration
 
+                        mItemList!!.txt_id.text = "Transaction ID : "+movie.eWalletTransactionID.toString()
+                        mItemList!!.txt_description.text = movie.narration.toString()+" "+movie.adddate+" "+movie.wallettime.toString()
+                        mItemList!!.txt_Amount.text = "₹ "+movie.amount.toString()+" "
+
+                        if(movie.amount.toInt()>0) {
+                            mItemList.txt_type.setText("Cr")
+                            mItemList!!.txt_Amount.setTextColor(Color.parseColor("#0b892e"))
+                        } else {
+                            mItemList.txt_type.setText("Dr")
+                            mItemList!!.txt_Amount.setTextColor(Color.parseColor("#ed1b24"))
+                        }
                     }
                 } catch (e: Exception) {
                     Toast.makeText(context, " " + e.message, Toast.LENGTH_SHORT).show()

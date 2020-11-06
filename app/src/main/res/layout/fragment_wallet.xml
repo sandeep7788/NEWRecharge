@@ -9,7 +9,9 @@
     <FrameLayout
         android:id="@+id/wallet_fram"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="75dp">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,59 +19,59 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Wallets"
-                android:textSize="19dp"
-                android:fontFamily="@font/worksans_medium"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:background="@color/c_blue_dark"
+                android:fontFamily="@font/worksans_medium"
                 android:foregroundGravity="center"
+                android:gravity="center"
                 android:padding="4dp"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginBottom="4dp" />
+                android:paddingTop="4dp"
+                android:text="Wallets"
+                android:textColor="@color/c_white"
+                android:textSize="@dimen/text" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/colorPrimaryDark"/>
+                android:background="@color/colorPrimaryDark" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/btn_rpwallet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="0.5dp"
                 android:minHeight="120dp"
-                app:cardCornerRadius="15dp"
-                app:cardBackgroundColor="@color/c_blue_dark"
-                android:layout_marginTop="9dp"
-                android:layout_marginRight="9dp"
-                android:layout_marginLeft="9dp"
-                android:layout_marginBottom="9dp">
+                app:cardBackgroundColor="@color/c_blue_dark">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:foregroundGravity="center"
-                    android:layout_margin="9dp">
+                    android:foregroundGravity="center">
 
                     <ImageView
                         android:layout_width="75dp"
                         android:layout_height="75dp"
                         android:layout_marginStart="16dp"
-                        android:padding="9dp"
+                        android:background="@drawable/bg_cercular_shape"
+                        android:backgroundTint="@color/c_blue"
+                        android:padding="15dp"
+                        android:src="@drawable/rupee"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/linearLayout13"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:src="@drawable/rupee"
-                        android:background="@drawable/bg_cercular_shape"
-                        app:tint="@color/selection"/>
+                        app:tint="@color/selection" />
 
                     <LinearLayout
                         android:id="@+id/linearLayout13"
@@ -92,7 +94,7 @@
                             android:foregroundGravity="right"
                             android:gravity="right"
                             android:padding="2dp"
-                            android:text="Total RP Wallet"
+                            android:text="Total Wallet"
                             android:textColor="@color/gray_btn_bg_color"
                             android:textSize="15dp" />
 
@@ -182,21 +184,12 @@
 
                             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-                           <!-- <LinearLayout
-                                android:id="@id/main_progress"
-                                android:layout_width="match_parent"
+                            <ProgressBar
+                                android:id="@+id/main_progress"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="bottom"
-                                android:background="#ffffff"
-                                android:orientation="vertical">-->
-
-                                <ProgressBar
-                                    android:id="@+id/main_progress"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center|bottom"
-                                    android:elevation="4dp"/>
-<!--                            </LinearLayout>-->
+                                android:layout_gravity="center|bottom"
+                                android:elevation="4dp" />
 
                         </FrameLayout>
 
@@ -207,7 +200,6 @@
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
-
 
 
         </LinearLayout>

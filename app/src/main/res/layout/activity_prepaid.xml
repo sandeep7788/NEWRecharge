@@ -84,6 +84,7 @@
                                     android:layout_height="wrap_content"
                                     android:hint="Enter Number"
                                     android:textSize="@dimen/text"
+                                    android:maxLength="13"
                                     android:inputType="number"
                                     android:textColor="@color/c_black"
                                     android:backgroundTint="@color/c_white"
@@ -190,6 +191,7 @@
                                     android:backgroundTint="@color/c_white"
                                     android:hint="Amount"
                                     android:textSize="@dimen/text"
+                                    android:maxLength="13"
                                     android:inputType="number"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -333,6 +335,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center|bottom"
+                                android:progressTint="@color/c_blue_dark"
                                 android:elevation="4dp"/>
 
                         </FrameLayout>

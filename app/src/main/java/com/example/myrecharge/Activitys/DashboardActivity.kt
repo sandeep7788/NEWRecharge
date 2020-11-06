@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -28,21 +29,29 @@ import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.fragment.app.FragmentTransaction
 import com.example.myrecharge.Fragment.Home_Fragment
 import com.example.myrecharge.Fragment.Profile_Fragment
-import com.example.myrecharge.Fragment.Setting_fragment
+import com.example.myrecharge.Fragment.SettingFragment
 import com.example.myrecharge.Fragment.WalletFragment
 import com.example.myrecharge.Helper.Local_data
 import com.example.myrecharge.R
 import com.example.myrecharge.databinding.ActivityDashboardBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import org.jsoup.Jsoup
 
 class DashboardActivity : AppCompatActivity() {
 
-    lateinit var mainBinding : ActivityDashboardBinding
-    lateinit var transaction:FragmentTransaction
-    var pref= Local_data(this@DashboardActivity)
-    var  CAMERA_PERMISSION_CODE = 100
-    var  STORAGE_PERMISSION_CODE = 101
-    var FRAGMENT_OTHER="FRAGMENT_OTHER"
+    lateinit var mainBinding: ActivityDashboardBinding
+    lateinit var transaction: FragmentTransaction
+    var pref = Local_data(this@DashboardActivity)
+    var CAMERA_PERMISSION_CODE = 100
+    var STORAGE_PERMISSION_CODE = 101
+    var FRAGMENT_OTHER = "FRAGMENT_OTHER"
+    //
+    private val REQ_CODE_VERSION_UPDATE: Int = 530
+    private val appUpdateManager: AppUpdateManager? = null
+    private val installStateUpdatedListener: InstallStateUpdatedListener? = null
+    lateinit var context:Context
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,12 +59,16 @@ class DashboardActivity : AppCompatActivity() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         pref.setMyappContext(this@DashboardActivity)
         mainBinding =
-            DataBindingUtil.setContentView(this,R.layout.activity_dashboard)
+            DataBindingUtil.setContentView(this, R.layout.activity_dashboard)
 
-        var MyReceiver: BroadcastReceiver?= null;
+        var MyReceiver: BroadcastReceiver? = null;
         MyReceiver = com.example.myrecharge.Helper.MyReceiver()
         registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         setFram(Home_Fragment())
+        context=this
+
+        val asyncTask = GetVersionCode()
+        asyncTask.execute()
 
         mainBinding.navigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -69,24 +82,32 @@ class DashboardActivity : AppCompatActivity() {
                     viewFragment(Profile_Fragment(), FRAGMENT_OTHER)
                 }
                 R.id.setting -> {
-                    viewFragment(Setting_fragment(), FRAGMENT_OTHER)
+                    viewFragment(SettingFragment(), FRAGMENT_OTHER)
                 }
             }
             true
         })
 
-        checkPermission(arrayOf(Manifest.permission.CAMERA,Manifest.permission.READ_PHONE_NUMBERS,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE),CAMERA_PERMISSION_CODE)
+        checkPermission(
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_PHONE_NUMBERS,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ), CAMERA_PERMISSION_CODE
+        )
     }
 
     @SuppressLint("WrongConstant")
-        fun setFram(fram: Fragment)
-        {
-            val fragmentManager: FragmentManager = supportFragmentManager
-            val fragmentTransaction =
-                fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.frame,fram)
-            fragmentTransaction.commit()
-        }
+    fun setFram(fram: Fragment) {
+        val fragmentManager: FragmentManager = supportFragmentManager
+        val fragmentTransaction =
+            fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame, fram)
+        fragmentTransaction.commit()
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun isOnline(context: Context): Boolean {
@@ -109,11 +130,6 @@ class DashboardActivity : AppCompatActivity() {
             }
         }
         return false
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
     }
 
     private fun viewFragment(
@@ -150,10 +166,8 @@ class DashboardActivity : AppCompatActivity() {
     }
 
 
-
-    fun exit_dialog()
-    {
-        val builder = AlertDialog.Builder(this,android.app.AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
+    fun exit_dialog() {
+        val builder = AlertDialog.Builder(this, android.app.AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
         //set title for alert dialog
         builder.setTitle("Exit")
         //set message for alert dialog
@@ -161,15 +175,15 @@ class DashboardActivity : AppCompatActivity() {
         builder.setIcon(android.R.drawable.ic_dialog_alert)
 
         //performing positive action
-            builder.setPositiveButton("Yes"){dialogInterface, which ->
-            Toast.makeText(applicationContext,"Exit....",Toast.LENGTH_LONG).show()
+        builder.setPositiveButton("Yes") { dialogInterface, which ->
+            Toast.makeText(applicationContext, "Exit....", Toast.LENGTH_LONG).show()
             val homeIntent = Intent(Intent.ACTION_MAIN)
             homeIntent.addCategory(Intent.CATEGORY_HOME)
             homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(homeIntent)
         }
 
-        builder.setNegativeButton("No"){dialogInterface, which ->
+        builder.setNegativeButton("No") { dialogInterface, which ->
             setFram(Home_Fragment())
         }
         // Create the AlertDialog
@@ -178,8 +192,13 @@ class DashboardActivity : AppCompatActivity() {
         alertDialog.setCancelable(false)
         alertDialog.show()
     }
+
     fun checkPermission(permission: Array<out String>, requestCode: Int) {
-        if (ContextCompat.checkSelfPermission(this@DashboardActivity, permission[0]) === PackageManager.PERMISSION_DENIED) {
+        if (ContextCompat.checkSelfPermission(
+                this@DashboardActivity,
+                permission[0]
+            ) === PackageManager.PERMISSION_DENIED
+        ) {
 
             // Requesting the permission
             ActivityCompat.requestPermissions(
@@ -187,11 +206,11 @@ class DashboardActivity : AppCompatActivity() {
                 requestCode
             )
         } else {
-            Toast.makeText(
+            /*Toast.makeText(
                 this@DashboardActivity,
                 "Permission already granted",
                 Toast.LENGTH_SHORT
-            ).show()
+            ).show()*/
 
         }
     }
@@ -204,27 +223,31 @@ class DashboardActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.size > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this,
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
+                Toast.makeText(
+                    this,
                     "Camera Permission Granted",
-                    Toast.LENGTH_SHORT)
+                    Toast.LENGTH_SHORT
+                )
                     .show();
-            }
-            else {
-                Toast.makeText(this,
+            } else {
+                Toast.makeText(
+                    this,
                     "Camera Permission Denied",
-                    Toast.LENGTH_SHORT)
+                    Toast.LENGTH_SHORT
+                )
                     .show();
                 val requiredPermission = Manifest.permission.CAMERA
                 val checkVal: Int = checkCallingOrSelfPermission(requiredPermission)
 
-                if (checkVal==PackageManager.PERMISSION_GRANTED){
+                if (checkVal == PackageManager.PERMISSION_GRANTED) {
 
 
-                    Log.e(">>","if")
+                    Log.e(">>", "if")
 
                 } else {
-                    Log.e(">>","else")
+                    Log.e(">>", "else")
                     startActivity(
                         Intent(
                             Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
@@ -233,24 +256,68 @@ class DashboardActivity : AppCompatActivity() {
                     )
                 }
             }
-        }
-
-        else if (requestCode == STORAGE_PERMISSION_CODE) {
+        } else if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.size > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this,
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            ) {
+                Toast.makeText(
+                    this,
                     "Storage Permission Granted",
-                    Toast.LENGTH_SHORT)
+                    Toast.LENGTH_SHORT
+                )
                     .show();
 
-            }
-            else {
-                Toast.makeText(this,
+            } else {
+                Toast.makeText(
+                    this,
                     "Storage Permission Denied",
-                    Toast.LENGTH_SHORT)
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
 
     }
+
+    inner class GetVersionCode :
+        AsyncTask<Void?, String?, String?>() {
+
+
+
+        override fun onPostExecute(onlineVersion: String?) {
+            super.onPostExecute(onlineVersion)
+
+            val currentVersion = context.packageManager.getPackageInfo(packageName, 0).versionName
+            Log.d(
+                "update",
+                "Current version " + currentVersion + "playstore version " + onlineVersion+" "+packageName
+            )
+            if (onlineVersion != null && !onlineVersion.isEmpty()) {
+                if (java.lang.Float.valueOf(currentVersion) < java.lang.Float.valueOf(onlineVersion)) {
+                    //show dialog
+                }
+            }
+        }
+
+        override fun  doInBackground(vararg voids: Void?): String? {
+            var newVersion: String? = null
+            return try {
+                newVersion = Jsoup.connect(
+                    "https://play.google.com/store/apps/details?id=" + context.getPackageName()
+                        .toString() + "&hl=it"
+                )
+                    .timeout(30000)
+                    .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                    .referrer("http://www.google.com")
+                    .get()
+                    .select(".hAyfc .htlgb")[7]
+                    .ownText()
+                newVersion
+            } catch (e: Exception) {
+                newVersion
+            }
+        }
+    }
+
+
 }

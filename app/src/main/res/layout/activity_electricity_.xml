@@ -24,6 +24,9 @@
                 android:orientation="vertical">
 
 
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/top_cardview"
@@ -31,10 +34,9 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="12dp"
                     android:elevation="9dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="12dp"
                     android:layout_marginLeft="12dp"
-                    android:paddingBottom="15dp"
                     android:layout_marginBottom="4dp">
 
                     <LinearLayout
@@ -44,7 +46,6 @@
                         android:orientation="vertical"
                         android:paddingRight="9dp"
                         android:layout_marginBottom="9dp"
-                        android:paddingBottom="25dp"
                         android:paddingLeft="9dp"
                         android:layout_marginTop="12dp">
 
@@ -54,7 +55,8 @@
                             android:orientation="horizontal"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:foregroundGravity="center">
+                            android:foregroundGravity="center"
+                            android:layout_marginBottom="10dp">
                             <RadioButton
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -151,13 +153,15 @@
                                 android:layout_marginLeft="15dp"
                                 android:orientation="vertical">
 
-                                <androidx.constraintlayout.widget.ConstraintLayout
+                                <LinearLayout
                                     android:id="@+id/constant_layout_fachbill"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="2dp"
                                     android:hint="Enter NUmber"
-                                    app:hintTextColor="@color/c_gray2">
+                                    app:hintTextColor="@color/c_gray2"
+                                    android:orientation="horizontal"
+                                    android:weightSum="3">
 
                                     <EditText
                                         android:id="@+id/edt_bill_number"
@@ -165,30 +169,34 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center|top"
                                         android:layout_margin="2dp"
+                                        android:layout_weight="1"
                                         android:backgroundTint="@color/white_color"
-                                        android:hint="K NUmber"
-                                        android:textSize="@dimen/text"
+                                        android:hint="Number"
                                         android:inputType="number"
+                                        android:maxLength="20"
+                                        android:textSize="@dimen/text"
                                         app:layout_constraintBottom_toBottomOf="parent"
                                         app:layout_constraintEnd_toEndOf="parent"
                                         app:layout_constraintStart_toStartOf="parent"
                                         app:layout_constraintTop_toTopOf="parent" />
-<!--sinch-->
+
                                     <Button
+                                        android:layout_weight="2"
                                         android:id="@+id/btn_fatchBill"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="40dp"
                                         android:layout_gravity="center"
                                         android:layout_marginEnd="8dp"
-                                        android:text="Fatch Bill"
-                                        android:textSize="@dimen/text"
-                                        android:textStyle="normal"
+                                        android:padding="2dp"
+                                        android:text="Fetch Bill"
+                                        android:textSize="@dimen/text_small"
                                         android:layout_marginTop="2dp"
                                         android:layout_marginBottom="2dp"
                                         android:paddingLeft="4dp"
                                         android:paddingRight="2dp"
                                         android:fontFamily="@font/worksans_medium"
-                                        android:background="@color/c_blue_dark"
+                                        android:background="@drawable/button_background"
+                                        android:elevation="2dp"
                                         android:textColor="@color/c_white"
                                         app:layout_constraintBottom_toBottomOf="@+id/edt_bill_number"
                                         app:layout_constraintEnd_toEndOf="@+id/edt_bill_number"
@@ -196,7 +204,8 @@
                                         app:layout_constraintStart_toStartOf="@+id/edt_bill_number"
                                         app:layout_constraintTop_toTopOf="parent" />
 
-                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                </LinearLayout>
                             </LinearLayout>
 
                         </LinearLayout>
@@ -220,17 +229,33 @@
                                 android:tint="@color/c_blue_dark"
                                 android:visibility="gone"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/txt_invalid"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
 
+                            <TextView
+                                android:id="@+id/txt_invalid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="2dp"
+                                android:foregroundGravity="center"
+                                android:gravity="center"
+                                android:text="Invalid Details"
+                                android:textColor="@color/c_red"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@+id/layout_shoew_fach_details"
+                                app:layout_constraintStart_toStartOf="@+id/layout_shoew_fach_details"
+                                app:layout_constraintTop_toTopOf="parent" />
+
                             <LinearLayout
                                 android:id="@+id/layout_shoew_fach_details"
-                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/grey"
                                 android:orientation="vertical"
+                                android:visibility="gone"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -279,8 +304,8 @@
                                         android:layout_marginBottom="4dp"
                                         android:layout_weight="1"
                                         android:fontFamily="@font/worksans_medium"
-                                        android:foregroundGravity="center"
-                                        android:gravity="center"
+                                        android:foregroundGravity="center|left"
+                                        android:gravity="center|left"
                                         android:text=""
                                         android:textColor="@color/text_color" />
 
@@ -447,6 +472,7 @@
                                         android:layout_height="wrap_content"
                                         android:hint="Enter Number"
                                         android:textSize="@dimen/text"
+                                        android:maxLength="13"
                                         android:inputType="number"
                                         android:textColor="@color/c_black"
                                         android:backgroundTint="@color/c_white"
@@ -490,6 +516,7 @@
                                         android:layout_height="wrap_content"
                                         android:hint="Enter Amount"
                                         android:textSize="@dimen/text"
+                                        android:maxLength="13"
                                         android:inputType="number"
                                         android:textColor="@color/c_black"
                                         android:backgroundTint="@color/c_white"
@@ -506,7 +533,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="39dp"
                             android:layout_marginTop="20dp"
-                            android:layout_marginBottom="3.0dip"
+                            android:layout_marginBottom="15dp"
                             android:background="@drawable/blue_button_background"
                             android:fontFamily="@font/baloo"
                             android:paddingLeft="8dp"
@@ -519,6 +546,7 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
+                </ScrollView>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -548,7 +576,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/worksans_medium"
                         android:padding="2dp"
-                        android:text="Recent Recharges"
+                        android:text="Recent Bills"
                         android:textColor="@color/c_black"
                         android:textSize="@dimen/text_small"
                         app:layout_constraintBottom_toBottomOf="parent"

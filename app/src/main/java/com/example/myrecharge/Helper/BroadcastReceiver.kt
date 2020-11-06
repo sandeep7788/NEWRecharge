@@ -4,25 +4,23 @@ import android.app.Activity
 import android.content.*
 import android.net.ConnectivityManager
 import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.myrecharge.Activitys.NetworkUtil
 
 
 public open class MyReceiver() : BroadcastReceiver() {
     var pausingDialog:SweetAlertDialog?=null
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(mContext: Context, intent: Intent) {
 
         var status: String = NetworkUtil.getConnectivityStatusString(
-            context
+            mContext
         )!!
         if(status.equals("No internet is available"))
         {
-            blockActivity(false,context)
+            blockActivity(false,mContext)
         }else{
             Log.d("@@", "onReceive: 3")
-            blockActivity(true,context)
-            blockActivity(true,context)
+            blockActivity(true,mContext)
 /*
             Snacky.builder()
                 .setActivity(context as Activity?)
@@ -39,32 +37,38 @@ public open class MyReceiver() : BroadcastReceiver() {
         }
     }
 
-    fun blockActivity(connected: Boolean,context: Context) {
+    fun blockActivity(connected: Boolean,mContext: Context) {
 
         if (pausingDialog == null) {
-            pausingDialog =SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+            pausingDialog =SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE)
             pausingDialog!!.titleText = "Application waiting for internet connection..."
             pausingDialog!!.setCancelable(false)
             pausingDialog!!.setConfirmClickListener{
                 pausingDialog!!.dismiss()
                 var MyReceiver: BroadcastReceiver?= null;
                 MyReceiver = MyReceiver();
-                context.registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+                mContext.registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
                 val intent = Intent()
                 intent.component = ComponentName(
                     "com.android.settings",
                     "com.android.settings.Settings\$DataUsageSummaryActivity"
                 )
-                context.startActivity(intent)
+                mContext.startActivity(intent)
             }
         }
         if (!connected) {
-            if (!(context as Activity).isFinishing) {
-                pausingDialog!!.show()
+
+            if (!(mContext as Activity).isFinishing) {
+                if (!pausingDialog!!.isShowing) {
+                    pausingDialog!!.show()
+                }
             }
         } else {
-            if (pausingDialog!!.isShowing){
-            pausingDialog!!.dismiss()}
+            if (!(mContext as Activity).isFinishing) {
+                if (pausingDialog!!.isShowing) {
+                    pausingDialog!!.dismiss()
+                }
+            }
         }
     }
 }

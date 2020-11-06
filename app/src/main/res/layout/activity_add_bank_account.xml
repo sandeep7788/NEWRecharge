@@ -77,7 +77,8 @@
                 android:inputType="text"
                 android:textColor="#4b4f54"
                 android:textColorHint="#939598"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                />
 
           </LinearLayout>
 
@@ -131,13 +132,6 @@
 
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-                <ProgressBar
-                    android:id="@+id/main_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|bottom"
-                    android:elevation="4dp" />
-
               </FrameLayout>
 
 
@@ -152,6 +146,7 @@
 
     </LinearLayout>
 
+<!--
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="fill_parent"
         android:layout_height="45dp"
@@ -177,6 +172,7 @@
           android:fontFamily="@font/worksans_medium"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+-->
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

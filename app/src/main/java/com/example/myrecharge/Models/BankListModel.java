@@ -12,6 +12,18 @@ public class BankListModel {
     @Expose
     private String BankerMasterName;
 
+    public String getBankImage() {
+        return BankImage;
+    }
+
+    public void setBankImage(String bankImage) {
+        BankImage = bankImage;
+    }
+
+    @SerializedName("BankImage")
+    @Expose
+    private String BankImage;
+
     public int getBankerMasterID() {
         return BankerMasterID;
     }

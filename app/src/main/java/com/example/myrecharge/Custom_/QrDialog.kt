@@ -26,9 +26,9 @@ class QrDialog(var activity: Activity?):Dialog(activity!!) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.qr_dialog)
 
-       /* val layoutParams = window!!.attributes
+        val layoutParams = window!!.attributes
         window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
-        window!!.attributes = layoutParams*/
+        window!!.attributes = layoutParams
         setCancelable(false)
         var img_qrcode: ImageView? =findViewById<ImageView>(R.id.img_qrcode)
         var img_close: ImageView? =findViewById<ImageView>(R.id.img_close)
@@ -53,7 +53,7 @@ class QrDialog(var activity: Activity?):Dialog(activity!!) {
         var pref= Local_data(activity)
         pref.setMyappContext(activity)
         val content = pref.ReadStringPreferences(Constances.PREF_MemberID)
-        name.text= pref.ReadStringPreferences(Constances.PREF_MemberID)
+        name.text= pref.ReadStringPreferences(Constances.PREF_MemberName)
 
         val writer = QRCodeWriter()
         val bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, 512, 512)

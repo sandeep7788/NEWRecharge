@@ -1,6 +1,7 @@
 package com.example.myrecharge.Activitys.Manus
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.budiyev.android.codescanner.*
+import com.example.myrecharge.Helper.Constances
 import com.example.myrecharge.Helper.Local_data
 import com.example.myrecharge.R
 import com.example.myrecharge.databinding.ScannerDialogBinding
@@ -18,7 +20,7 @@ class Scanner_Activity : AppCompatActivity() {
     lateinit var mainBinding : ScannerDialogBinding
     var pref= Local_data(this@Scanner_Activity)
     private lateinit var codeScanner: CodeScanner
-
+    var TAG=">>Scanner_Activity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +28,6 @@ class Scanner_Activity : AppCompatActivity() {
             DataBindingUtil.setContentView(this,R.layout.scanner_dialog)
         pref.setMyappContext(this@Scanner_Activity)
         codeScanner = CodeScanner(this,mainBinding.scannerView)
-
 
         checkPermission(arrayOf(
             Manifest.permission.CAMERA),101)
@@ -51,14 +52,21 @@ class Scanner_Activity : AppCompatActivity() {
             runOnUiThread {
                 Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
 
+                Log.e(TAG, "start_scaner: 1"+it.text )
+                Log.e(TAG, "start_scaner: "+it.barcodeFormat )
 
-
+                var mIntent: Intent?=null
+                mIntent= Intent(this@Scanner_Activity,Pay_Activity::class.java)
+                    mIntent.putExtra(Constances.PREF_MemberID,it.text.toString())
+                    startActivity(mIntent)
+                finish()
             }
         }
         codeScanner.errorCallback = ErrorCallback {
             runOnUiThread {
                 Toast.makeText(this, "Camera initialization error: ${it.message}",
                     Toast.LENGTH_LONG).show()
+                Log.e(TAG, "start_scaner: "+it.message.toString() )
             }
         }
 
@@ -83,7 +91,7 @@ class Scanner_Activity : AppCompatActivity() {
             val checkVal: Int = checkCallingOrSelfPermission(requiredPermission)
 
             if (checkVal==PackageManager.PERMISSION_GRANTED){
-//                start_scaner()
+                start_scaner()
                 Log.e(">>","if")
             } else {
                 Log.e(">>","else")

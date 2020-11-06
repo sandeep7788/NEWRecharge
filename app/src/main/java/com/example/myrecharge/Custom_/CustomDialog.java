@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.myrecharge.Adapter.CustomAlertAdapter;
 import com.example.myrecharge.Helper.Constances;
 import com.example.myrecharge.Helper.Local_data;
 import com.example.myrecharge.Models.OperatorModel;
@@ -90,9 +91,7 @@ public class CustomDialog extends Dialog implements AdapterView.OnItemClickListe
                 array_sort.clear();
 
                 for (int i = 0; i < TitleName.size(); i++)
-
                 {
-
                     if (textlength <= TitleName.get(i).getOperatorName().length())
                     {
                         if(TitleName.get(i).getOperatorName().toLowerCase().contains(alertdialog_edittext.getText().toString().toLowerCase().trim()))
@@ -111,17 +110,17 @@ public class CustomDialog extends Dialog implements AdapterView.OnItemClickListe
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Log.e(">>itemclick", String.valueOf(i));
         if(click_status) {
-            textView.setText(" "+array_sort.get(i).getOperatorName().toString());
-            textView.setTextColor(Color.BLACK);
             Local_data pref = new Local_data(context);
             pref.writeStringPreference(Constances.PREF_operator_code,array_sort.get(i).getOperatorCode().toString());
-        } else {
-            textView.setText(" "+TitleName.get(i).getOperatorName().toString());
+            textView.setText(" "+array_sort.get(i).getOperatorName().toString());
             textView.setTextColor(Color.BLACK);
+        } else {
             Local_data pref = new Local_data(context);
             pref.writeStringPreference(Constances.PREF_operator_code,TitleName.get(i).getOperatorCode().toString());
+            textView.setText(" "+TitleName.get(i).getOperatorName().toString());
+            textView.setTextColor(Color.BLACK);
+            Log.e(">>itemclick"," "+TitleName.get(i).getOperatorName().toString());
         }
         dismiss();
     }

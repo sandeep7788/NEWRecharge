@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">#132752</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/c_gray1</item>
     </style>
 
     <style name="checkBoxStyle" parent="@style/Base.Theme.AppCompat">
@@ -98,5 +98,12 @@
         <!--<item name="android:windowAnimationStyle">@style/DialogAnimation</item>-->
     </style>
 
+    <style name="EmailTextInputEditText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/c_gray1</item>
+        <item name="colorControlNormal">#a90000</item>
+        <item name="android:textCheckMark">@color/black</item>
+        <item name="android:inputType">number</item>
+    </style>
 
 </resources>

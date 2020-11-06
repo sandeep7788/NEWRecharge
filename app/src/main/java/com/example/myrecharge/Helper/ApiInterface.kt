@@ -41,12 +41,12 @@ interface ApiInterface {
     ): Call<JsonObject>
 //http://recharge.codunite.com/Mobileapi.asmx/getrechargereport
     @FormUrlEncoded
-    @POST("getrechargereport")
+    @POST("Rechargeprcess")
     fun getRechargeprcess(
         @Header("username") username: String?,
         @Header("password") password: String?,
         @Field("RechargeAmount") RechargeAmount:String,
-        @Field("Opreator") Opreator:String,
+        @Field("Operator") Opreator:String,
         @Field("Number") Number:String
     ): Call<JsonObject>
 
@@ -80,7 +80,18 @@ interface ApiInterface {
     fun get_billGetFatchbilleroperatordetails(
         @Header("username") username:String,
         @Header("password") password:String,
-        @Field("Operator") Operator:String
+        @Field("Operator") Operator:String,
+        @Field("servicenum") servicenum:String
+    ): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST("MoneyTransfer")
+    fun MoneyTransfer(
+        @Header("username") username:String,
+        @Header("password") password:String,
+        @Header("amount") amount:String,
+        @Header("MemberAccountID") MemberAccountID:String,
+        @Field(".") Operator:String
     ): Call<JsonObject>
 
     @FormUrlEncoded
@@ -93,7 +104,8 @@ interface ApiInterface {
     @FormUrlEncoded
     @POST("PayFatchMemberDeatils")
     fun PayFatchMemberDeatils(
-        @Header("MemberID") MemberID:String
+        @Header("MemberID") MemberID:String,
+        @Field(".") a:String
     ): Call<JsonObject>
 
     @FormUrlEncoded
@@ -105,13 +117,90 @@ interface ApiInterface {
     ): Call<JsonObject>
 
     @FormUrlEncoded
-    @POST("PayReportDeatils")
+        @POST("PayReportDeatils")
     fun PayReportDeatils(
         @Header("Membermsrno") Membermsrno:String,
-        @Header("recordPaymentID") recordPaymentID:String,
+            @Header("recordPaymentID") recordPaymentID:String,
         @Field(".") Amount:String
     ): Call<JsonObject>
 
     @POST("getAllbanknamedetails")
     fun getAllbanknamedetails(): Call<JsonObject>
-}
+
+    @FormUrlEncoded
+    @POST("GetMemberBankAccount")
+    fun GetMemberBankAccount(@Field("Msrno")Msrno:String): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST("AddMemberBankAccount")
+    fun AddMemberBankAccount(@Field("Msrno")Msrno:String,
+                             @Field("BankID")BankID:String,
+                             @Field("customernumber")customernumber:String,
+                             @Field("Accountnumber")Accountnumber:String,
+                             @Field("CustomerName")CustomerName:String,
+                             @Field("ifsccode")ifsccode:String): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST("EditMemberBankAccount")
+        fun EditMemberBankAccount(
+                            @Header("username") username:String,
+                            @Header("password") password:String,
+                            @Field("Msrno")Msrno:String,
+                            @Field("AccountID")AccountID:String,
+                             @Field("BankID")BankID:String,
+                             @Field("customernumber")customernumber:String,
+                             @Field("Accountnumber")Accountnumber:String,
+                             @Field("CustomerName")CustomerName:String,
+                             @Field("ifsccode")ifsccode:String): Call<JsonObject>
+    @FormUrlEncoded
+    @POST("BillElectricitypayment")
+        fun BillElectricitypayment(
+                            @Header("username") username:String,
+                            @Header("password") password:String,
+                            @Field("RechargeAmount")RechargeAmount:String,
+                            @Field("Operator")Operator:String,
+                             @Field("Number")Number:String,
+                             @Field("CustomNumber")CustomNumber:String): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST("UpdateMemberProfile")
+        fun UpdateMemberProfile(
+                            @Header("Msrno") Msrno:String,
+                            @Field("FirstName") FirstName:String,
+                            @Field("LastName")LastName:String,
+                            @Field("Mobile")Mobile:String,
+                             @Field("Email")Email:String,
+                             @Field("Address")Address:String,
+                             @Field("landmark")landmark:String,
+                             @Field("CountryID")CountryID:String,
+                             @Field("ZIP")ZIP:String,
+                             @Field("GSTno")GSTno:String,
+                             @Field("stateID")stateID:String
+    ): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST("RemoveMemberBankAccount")
+    fun RemoveMemberBankAccount(@Header("username") username:String,
+                                @Header("password") password:String,
+                                @Field("AccountID")AccountID:String): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST("ChangePassword")
+    fun ChangePassword(     @Header("Msrno") username:String,
+                                     @Header("oldpassword") oldpassword:String,
+                             @Header("newpassword")newpassword:String
+    ,@Field(".") mField:String): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST("ForgotPassword")
+    fun ForgotPassword(     @Header("username") username:String
+    ,@Field(".") mField:String): Call<JsonObject>
+
+
+    @POST("getAllState")
+    fun getAllState(): Call<JsonObject>
+
+    @POST("Companybankdetails")
+    fun Companybankdetails(): Call<JsonObject>
+}/*
+profile update wronge peramiters*/

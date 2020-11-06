@@ -23,6 +23,9 @@ xmlns:tools="http://schemas.android.com/tools">
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
         <androidx.cardview.widget.CardView
             android:id="@+id/top_cardview"
             android:layout_width="match_parent"
@@ -32,7 +35,6 @@ xmlns:tools="http://schemas.android.com/tools">
             android:layout_marginTop="15dp"
             android:layout_marginRight="12dp"
             android:layout_marginLeft="12dp"
-            android:paddingBottom="15dp"
             android:layout_marginBottom="9dp">
 
             <LinearLayout
@@ -46,6 +48,7 @@ xmlns:tools="http://schemas.android.com/tools">
                 android:layout_marginTop="12dp">
 
                 <LinearLayout
+                    android:id="@+id/layout_user_id"
                     android:layout_marginTop="9dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -65,14 +68,16 @@ xmlns:tools="http://schemas.android.com/tools">
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:layout_weight="3">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="2dp"
                             android:hint="Member ID or Mobile Number"
-                            app:hintTextColor="@color/c_gray2">
+                            app:hintTextColor="@color/c_gray2"
+                            android:layout_weight="1">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_member_idor_number"
@@ -81,14 +86,90 @@ xmlns:tools="http://schemas.android.com/tools">
                                 android:hint="Member ID or Mobile Number"
                                 android:textSize="@dimen/text"
                                 android:inputType="number"
+                                android:maxLength="15"
                                 android:textColor="@color/c_black"
                                 android:backgroundTint="@color/c_white"
                                 android:textColorHint="@color/c_white"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:layout_weight="2"
+                            android:id="@+id/txt_chech_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="8dp"
+                            android:padding="2dp"
+                            android:text="Check Details"
+                            android:textSize="@dimen/text_small"
+                            android:layout_marginTop="4dp"
+                            android:paddingLeft="4dp"
+                            android:paddingRight="2dp"
+                            android:fontFamily="@font/worksans_medium"
+                            android:background="@drawable/button_background"
+                            android:elevation="2dp"
+                            android:textColor="@color/c_white"
+                            app:layout_constraintBottom_toBottomOf="@+id/edt_bill_number"
+                            app:layout_constraintEnd_toEndOf="@+id/edt_bill_number"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="@+id/edt_bill_number"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:foregroundGravity="center|left">
+<!--
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Check Details"
+                    android:textSize="@dimen/text_small"
+                    android:padding="4dp"
+                    android:layout_marginLeft="70dp"
+                    android:background="@drawable/background_shadow"
+                    android:textColor="@color/c_white"
+                    android:layout_gravity="center|left"
+                    android:gravity="center|left"
+                    android:foregroundGravity="center"/>
+-->
+
+                <ProgressBar
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/progressbar_mini"
+                    android:progressTint="@color/c_blue_dark"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:foregroundGravity="center"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txt_userfachedDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginStart="45dp"
+                    android:layout_weight="1"
+                    android:text="@string/address"
+                    android:fontFamily="@font/worksans_medium"
+                    android:foregroundGravity="center"
+                    android:gravity="left|center"
+                    android:paddingLeft="4dp"
+                    android:textColor="@color/text_color"
+                    android:visibility="gone"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -132,6 +213,7 @@ xmlns:tools="http://schemas.android.com/tools">
                                 android:hint="Enter Amount"
                                 android:textSize="@dimen/text"
                                 android:inputType="number"
+                                android:maxLength="25"
                                 android:textColor="@color/c_black"
                                 android:backgroundTint="@color/c_white"
                                 android:textColorHint="@color/c_white"/>
@@ -186,7 +268,7 @@ xmlns:tools="http://schemas.android.com/tools">
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
+            </ScrollView>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -216,7 +298,7 @@ xmlns:tools="http://schemas.android.com/tools">
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/worksans_medium"
                     android:padding="2dp"
-                    android:text="Recent Recharges"
+                    android:text="Recent Activity"
                     android:textColor="@color/c_black"
                     android:textSize="@dimen/text_small"
                     app:layout_constraintBottom_toBottomOf="parent"

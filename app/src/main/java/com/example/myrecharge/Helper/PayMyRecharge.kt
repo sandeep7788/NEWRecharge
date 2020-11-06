@@ -20,9 +20,9 @@ class PayMyRecharge : Application() {
         setMyappContext(applicationContext)
         instance = this
 
-        var MyReceiver: BroadcastReceiver?= null;
+/*        var MyReceiver: BroadcastReceiver?= null;
         MyReceiver = com.example.myrecharge.Helper.MyReceiver()
-        registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        registerReceiver(MyReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))*/
 
     }
 
@@ -96,7 +96,7 @@ class PayMyRecharge : Application() {
 
         fun logout(confirm: Boolean) {
             if (!confirm) return
-            //        writeIntPreference(SharedPrefData.PREF_IsLogin, 0);
+                    writeIntPreference(Constances.PREF_IsLogin, 0)
             clearPrefrences()
         }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.myrecharge" >
+    package="com.example.myrecharge">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -25,20 +25,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon"
-        tools:targetApi="m" >
-        <activity android:name=".Activitys.AddBankAccount" >
-        </activity>
-        <activity android:name=".Activitys.Manus.MoneyTrasfer" />
+        tools:targetApi="m">
+        <activity android:name=".Activitys.Manus.MoneyTransferActivity" />
+        <activity android:name=".Activitys.Manus.AddBankAccount" />
+        <activity android:name=".Activitys.Manus.MT_UserAddedBankAC" />
+        <activity android:name=".Activitys.AddBankACForm_Activity" />
         <activity android:name=".Activitys.Manus.Electricity_Activity" />
         <activity android:name=".Activitys.Manus.TabActivity" />
         <activity android:name=".Activitys.Manus.History_Activity" />
-        <activity android:name=".Custom_.CustomDialog" />
         <activity android:name=".Activitys.Manus.Scanner_Activity" />
-        <activity android:name=".Activitys.ChangePassword_Activity" />
-        <activity android:name=".Activitys.AccountDetails_Activity" />
         <activity android:name=".Activitys.Personal_detailsActivity" />
-        <activity android:name=".Activitys.Qr_Activity" />
-        <activity android:name=".Activitys.SplachScreen" >
+        <activity android:name=".Activitys.SplachScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,10 +43,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activitys.Login_Activity" />
-        <activity android:name=".Activitys.DashboardActivity" />
+        <activity
+            android:name=".Activitys.DashboardActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".Activitys.Manus.Pay_Activity" />
         <activity android:name=".Activitys.Pay_Activity2" />
-        <activity android:name=".Activitys.Manus.Prepaid_Activity" />
+        <activity android:name=".Activitys.Manus.TopServicesActivity"/>
         <activity android:name=".Activitys.Manus.SelectRecharge_Palne_Activity" />
     </application>
 

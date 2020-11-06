@@ -65,7 +65,7 @@ class Home_Fragment: Fragment() {
     fun monClick()
     {
         var mIntent:Intent ?=null
-        mIntent=Intent(context,Prepaid_Activity::class.java)
+        mIntent=Intent(context,TopServicesActivity::class.java)
         mainBinding.btnPrepaid.setOnClickListener {
             pref.writeIntPreference("opt",1)
         startActivity(mIntent)}
@@ -83,7 +83,7 @@ class Home_Fragment: Fragment() {
             startActivity(mIntent) }
 
         mainBinding.btnMTransfer.setOnClickListener {
-            startActivity(Intent(thiscontext,MoneyTrasfer::class.java)) }
+            startActivity(Intent(thiscontext,MT_UserAddedBankAC::class.java)) }
 
         mainBinding.btnBus.setOnClickListener {
             showDialog_commingSoon() }
@@ -97,7 +97,8 @@ class Home_Fragment: Fragment() {
         mainBinding.btnGas.setOnClickListener {
             showDialog_commingSoon() }
         mainBinding.btnLadline.setOnClickListener {
-            showDialog_commingSoon() }
+            pref.writeIntPreference("opt",9)
+            startActivity(mIntent) }
 
         mainBinding.btnWater.setOnClickListener {
             showDialog_commingSoon() }
@@ -105,6 +106,9 @@ class Home_Fragment: Fragment() {
         mainBinding.btnHotel.setOnClickListener {
             showDialog_commingSoon() }
 
+        mainBinding.layoutBankTransfer.setOnClickListener {
+            startActivity(Intent(thiscontext,MT_UserAddedBankAC::class.java))
+        }
         mainBinding.btnPay.setOnClickListener { startActivity(Intent(context,Pay_Activity::class.java)) }
         mainBinding.btnHistory.setOnClickListener { startActivity(Intent(context,History_Activity::class.java)) }
         mainBinding.btnElectric.setOnClickListener { startActivity(Intent(context,Electricity_Activity::class.java)) }
@@ -118,11 +122,6 @@ class Home_Fragment: Fragment() {
 
         }
         mainBinding.layoutPaytomember.setOnClickListener {
-          /*  var mQrDialog : QrScanner
-            mQrDialog=
-                QrScanner(activity)
-            mQrDialog.getWindow()!!.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            mQrDialog.show()*/
             val requiredPermission = Manifest.permission.CAMERA
             val checkVal: Int = thiscontext.checkCallingOrSelfPermission(requiredPermission)
 
@@ -134,8 +133,7 @@ class Home_Fragment: Fragment() {
                 Toast.makeText(thiscontext,"Please Allow Camera Permission.",Toast.LENGTH_SHORT).show()
 
                 if (ActivityCompat.checkSelfPermission(thiscontext,
-                        Manifest.permission.CAMERA
-                    ) !== PackageManager.PERMISSION_GRANTED
+                        Manifest.permission.CAMERA) !== PackageManager.PERMISSION_GRANTED
                 ) {
 
                     requestPermissions(arrayOf(Manifest.permission.CAMERA), 101)
@@ -200,6 +198,7 @@ class Home_Fragment: Fragment() {
             }
             .show()
     }
+
 
     private fun createBottomUpAnimation(
         view: View,
@@ -278,4 +277,9 @@ class Home_Fragment: Fragment() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume: ")
+        getBalance()
+    }
 }

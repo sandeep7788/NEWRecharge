@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
@@ -35,6 +36,7 @@ class SelectRecharge_Palne_Activity : AppCompatActivity() {
     private var back: ImageView? = null
     private var btn_user: ImageView? = null
     private var layout_empty_img: LinearLayout? = null
+    private var progressbar: ProgressBar? = null
 
     var TAG="@@SelectRecharge_Palne_Activity"
     var pref = Local_data(this@SelectRecharge_Palne_Activity)
@@ -46,6 +48,7 @@ class SelectRecharge_Palne_Activity : AppCompatActivity() {
         back=findViewById(R.id.back)
         btn_user=findViewById(R.id.btn_user)
         layout_empty_img=findViewById(R.id.layout_empty_img)
+        progressbar=findViewById(R.id.progressbar)
         viewPager?.measure(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -57,6 +60,7 @@ class SelectRecharge_Palne_Activity : AppCompatActivity() {
         //
         back!!.setOnClickListener { super.onBackPressed() }
         btn_user!!.setVisibility(View.GONE)
+        layout_empty_img!!.setVisibility(View.GONE)
 
     }
     
@@ -74,8 +78,8 @@ class SelectRecharge_Palne_Activity : AppCompatActivity() {
                     response: Response<ModelRequestdetails?>
                 ) {
 
-                        layout_empty_img!!.setVisibility(View.GONE)
 
+                    progressbar!!.setVisibility(View.GONE)
                     if (response.isSuccessful) {
 //                        if (mJsonObject.has("Data") && !mJsonObject.isNull("Data")) {
                         if (response.body()?.data!=null) {
@@ -96,6 +100,7 @@ class SelectRecharge_Palne_Activity : AppCompatActivity() {
                             for (i in mFragmentList.indices) {
                                 mFragmentTitleList.add("no title")
                             }
+                            layout_empty_img!!.setVisibility(View.GONE)
                         }
                         else {
                             layout_empty_img!!.setVisibility(View.VISIBLE)
@@ -109,6 +114,7 @@ class SelectRecharge_Palne_Activity : AppCompatActivity() {
                     call: Call<ModelRequestdetails?>,
                     t: Throwable
                 ) {
+                    progressbar!!.setVisibility(View.GONE)
                     layout_empty_img!!.setVisibility(View.VISIBLE)
                 }
             })
